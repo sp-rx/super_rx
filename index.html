@@ -1116,13 +1116,13 @@ function copyRightToLeft(){
 </div>
 </td></tr>
 
-<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceBoth"></span><br>
-<span id="foggingBoth"></span> <br> <span id="perpendicular-axis-ou"></span>
+<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceBoth"></span>
 </td></tr>
 
 
-<tr style="border-top:none">
+<tr style="border-top:1px dotted lightgrey">
 <td style="border-top:none"colspan="4">
+<span id="foggingBoth"></span> . <span id="perpendicular-axis-ou"></span><br><br>
 
 <div class="fc-row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:5%;width:100%;">
 
@@ -1347,12 +1347,13 @@ function copyRightToLeft(){
 </div>
 </td></tr>
 
-<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceRight"></span><br>
-<span id="foggingRight"></span> <br> <span id="perpendicular-axis-re"></span>
+<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceRight"></span>
 </td></tr>
 
-<tr style="border-top:none">
+
+<tr style="border-top:1px dotted lightgrey">
 <td style="border-top:none"colspan="4">
+<span id="foggingRight"></span> . <span id="perpendicular-axis-re"></span><br><br>
 
 <div class="fc-row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:5%;width:100%;">
 
@@ -1571,13 +1572,13 @@ function copyRightToLeft(){
 </div>
 </td></tr>
 
-<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceLeft"></span><br>
-<span id="foggingLeft"></span> <br> <span id="perpendicular-axis-le"></span>
+<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceLeft"></span>
 </td></tr>
 
 
-<tr style="border-top:none">
+<tr style="border-top:1px dotted lightgrey">
 <td style="border-top:none"colspan="4">
+<span id="foggingLeft"></span> . <span id="perpendicular-axis-le"></span><br><br>
 
 <div class="fc-row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:5%;width:100%;">
 
@@ -1741,19 +1742,19 @@ function updateFogging(balanceId, foggingId) {
   if (!b || !f) return;
 
   if (b.innerText === "N/A") {
-    f.innerText = "Fogging : N/A";
+    f.innerText = "Fogging N/A";
     return;
   }
 
   const v = parseFloat(b.innerText);
   if (isNaN(v)) {
-    f.innerText = "Fogging : N/A";
+    f.innerText = "Fogging N/A";
     return;
   }
 
   const fog = snapToQuarter(v + 0.75);
   f.innerText =
-    "(fog > 0 ? "+" : "") + fog.toFixed(2) + " SPH";
+    "Apply " + (fog > 0 ? "+" : "") + fog.toFixed(2) + " SPH all the time during Fan Chart Test.";
 }
 
 function recalcAll() {
@@ -1807,9 +1808,9 @@ const clockMap = {
       if (val in clockMap) {
         let deg = (parseInt(val, 10) + 90) % 180;
         if (deg === 0) deg = 180;
-        span.innerText = 'Over : ' + clockMap[deg];
+        span.innerText = 'Stop when ' + clockMap[deg] + ' is darker.';
       } else {
-        span.innerText = 'Over : N/A';
+        span.innerText = 'Over CYL N/A';
       }
     };
 
