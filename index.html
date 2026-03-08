@@ -1117,7 +1117,7 @@ function copyRightToLeft(){
 </td></tr>
 
 <tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceBoth"></span><br>
-<span id="foggingBoth"></span> ; <span id="perpendicular-axis-ou"></span>
+<span id="foggingBoth"></span> <br> <span id="perpendicular-axis-ou"></span>
 </td></tr>
 
 
@@ -1348,7 +1348,7 @@ function copyRightToLeft(){
 </td></tr>
 
 <tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceRight"></span><br>
-<span id="foggingRight"></span> ; <span id="perpendicular-axis-re"></span>
+<span id="foggingRight"></span> <br> <span id="perpendicular-axis-re"></span>
 </td></tr>
 
 <tr style="border-top:none">
@@ -1572,7 +1572,7 @@ function copyRightToLeft(){
 </td></tr>
 
 <tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">Duochrome Sph Bal : <span id="balanceLeft"></span><br>
-<span id="foggingLeft"></span> ; <span id="perpendicular-axis-le"></span>
+<span id="foggingLeft"></span> <br> <span id="perpendicular-axis-le"></span>
 </td></tr>
 
 
@@ -1753,7 +1753,7 @@ function updateFogging(balanceId, foggingId) {
 
   const fog = snapToQuarter(v + 0.75);
   f.innerText =
-    "Fogging : " + (fog > 0 ? "+" : "") + fog.toFixed(2) + " SPH";
+    "(fog > 0 ? "+" : "") + fog.toFixed(2) + " SPH";
 }
 
 function recalcAll() {
