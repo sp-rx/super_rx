@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MEYER German Tech-Rx</title>
+<title>Super Position Rx</title>
 <style>
 html, body, table, th, td, input, button, select, option, b, label {
   font-size: 11px !important;
@@ -444,7 +444,7 @@ button.active {
 <tr>
   <td class="blue" colspan="4" style="height:450px; text-align:center; padding:20px; vertical-align:middle;">
 
-    <h1 style="margin:0 10% 0 10%; color: black; line-height:25px; text-align:left;">MEYER German Tech Eye Exam<br>- - -</h1>
+    <h1 style="margin:0 10% 0 10%; color: black; line-height:25px; text-align:left;">Super Position Eye Exam<br>- - -</h1>
 <br><br>
     <p style="margin:0 10% 3% 10%; font-size:15px; color:black; line-height:20px; text-align:left;">The best prescription are smooth, comfortable and clear.<br>And this test always deliver.</p>
 
@@ -997,21 +997,27 @@ function copyRightToLeft(){
 <!-- Vector Refraction -->
 <tr>
   <th class="yellow" colspan="4">Vector Refraction</th></tr>
-<tr style="border-bottom:none"><td style="border-bottom:none" colspan="4"><b><i> Instructions to fill FC DC Bal </i></b><br><br>1. Measure and input the amount of sph needed to shift DC to balance.<br>2. Calculate fogging (+1.00 + DC Bal) for FC test.<br>3. Apply fogging, measure and input the amount of cyl and axis needed to balance FC.<br>4. Press USE to transfer details to Vector Changes.<br><br>
-<button style="width:80%" id="toggleBtn">Show / Hide Helper</button>
- </td></tr>
+<tr style="border-bottom:none"><td style="border-bottom:none" colspan="4">1. Measure and input the amount of sph needed to shift DC to balance.<br>2. Apply fogging, measure and input the amount of cyl and axis needed to balance FC.<br><br>
 
+<button style="width:80%" id="toggleBtn">Show / Hide Helper</button>
+
+
+ </td></tr>
 </table>
 
 
-<div class="hide_show" style="display:none">
+<div class="hide_show">
 <table>
-<tr style="border:none; height:5px;">
+
+<tr style="border:none; height:1px;">
   <td style="border:none; height:1px; padding:0; width:10%"></td>
   <td style="border:none; height:1px; padding:0;"></td>
   <td style="border:none; height:1px; padding:0;"></td>
   <td style="border:none; height:1px; padding:0;"></td>
 </tr>
+<tr><th colspan="4">
+<span class="customerName_summary"></span>
+</th></tr>
 
 <tr><th colspan="4">FC DC Status Both Eye</th></tr>
 <tr data-eye="both" style="border-bottom:none">
@@ -1116,20 +1122,16 @@ function copyRightToLeft(){
 </div>
 </td></tr>
 
-<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span id="balanceBoth"></span>
-
-</td></tr>
-
 
 <tr style="border-top:1px dotted lightgrey">
 <td style="border-top:none"colspan="4">
-<span id="foggingBoth"></span><span id="perpendicular-axis-ou"></span><br><br>FC CYL: <span id="balance-ou"></span><br><br>
+<span id="foggingBoth"></span><span id="perpendicular-axis-ou"></span><br><br>
 
 <div class="fc-row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:5%;width:100%;">
 
   <!-- +0.00 FC -->
   <div id="fc-block-ou" class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>NOW</span>
+    <span>NOW + FOG</span>
     <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1151,7 +1153,7 @@ function copyRightToLeft(){
 
   <!-- +0.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+0.50 CYL</span>
+    <span>+0.50 CYL + FOG</span>
     <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1172,7 +1174,7 @@ function copyRightToLeft(){
 
   <!-- +1.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+1.00 CYL</span>
+    <span>+1.00 CYL + FOG</span>
     <select class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1193,7 +1195,7 @@ function copyRightToLeft(){
 
   <!-- +1.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+1.50 CYL</span>
+    <span>+1.50 CYL + FOG</span>
     <select class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1214,7 +1216,7 @@ function copyRightToLeft(){
 
   <!-- +2.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+2.00 CYL</span>
+    <span>+2.00 CYL + FOG</span>
     <select class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1235,12 +1237,33 @@ function copyRightToLeft(){
 
 
 </div>
-<br><br>
 </td></tr>
 
+<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceBoth"></span>FC CYL: <span id="balance-ou"></span>
+
+</td></tr>
+
+<tr>
+  <td>FC DC Bal BE<br><div style="margin-top:5px"><button onclick="copyVD_OU_to_ODOS()" style="border-radius:10px; width:70px; height:25px">Use BE</button></div></td>
+  <td>
+     Sph : <input type="number" step="0.25" id="vd_ouS"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_ouS">-</span></div>
+  </td>
+  <td>
+    Cyl : <input type="number" step="0.25" id="vd_ouC"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_ouC">-</span></div>
+  </td>
+  <td>
+    Axis : <input type="number" step="5" min="0" max="180" id="vd_ouA"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_ouA">-</span></div>
+  </td>
+</tr>
 
 
-<tr><th colspan="4">FC DC Status Right Eye <button onclick="toggleRE()">Show / Hide</button>
+
+
+
+<tr><th colspan="4">FC DC Status Right Eye <button class="vtbn" onclick="toggleRE()">Show / Hide</button>
 </th></tr>
 
 
@@ -1349,20 +1372,18 @@ function copyRightToLeft(){
 </div>
 </td></tr>
 
-<tr class="re-row" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span id="balanceRight"></span>
 
-</td></tr>
 
 
 <tr style="border-top:1px dotted lightgrey">
 <td class="re-row" style="display:none; border-top:none"colspan="4">
-<span id="foggingRight"></span><span id="perpendicular-axis-re"></span><br><br>FC CYL: <span id="balance-re"></span><br><br>
+<span id="foggingRight"></span><span id="perpendicular-axis-re"></span><br><br>
 
 <div class="fc-row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:5%;width:100%;">
 
   <!-- +0.00 FC -->
   <div id="fc-block-re" class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>NOW</span>
+    <span>NOW + FOG</span>
     <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1383,7 +1404,7 @@ function copyRightToLeft(){
 
   <!-- +0.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+0.50 CYL</span>
+    <span>+0.50 CYL + FOG</span>
     <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1404,7 +1425,7 @@ function copyRightToLeft(){
 
   <!-- +1.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+1.00 CYL</span>
+    <span>+1.00 CYL + FOG</span>
     <select class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1425,7 +1446,7 @@ function copyRightToLeft(){
 
   <!-- +1.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+1.50 CYL</span>
+    <span>+1.50 CYL + FOG</span>
     <select class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1446,7 +1467,7 @@ function copyRightToLeft(){
 
   <!-- +2.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+2.00 CYL</span>
+    <span>+2.00 CYL + FOG</span>
     <select class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1468,10 +1489,31 @@ function copyRightToLeft(){
 
 
 </div>
-<br><br>
+
+<tr class="re-row" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceRight"></span>FC CYL: <span id="balance-re"></span>
+
 </td></tr>
 
-<tr><th colspan="4">FC DC Status Left Eye <button onclick="toggleLE()"> Show / Hide </button>
+</td></tr>
+
+<tr class="re-row" style="display:none">
+  <td>FC DC Bal R<br><div style="margin-top:5px"><button onclick="copyVD_OD()" style="border-radius:10px; width:70px; height:25px">Use RE</button></div></td>
+  <td>
+     Sph : <input type="number" step="0.25" id="vd_odS"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_odS">-</span></div>
+  </td>
+  <td>
+    Cyl : <input type="number" step="0.25" id="vd_odC"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_odC">-</span></div>
+  </td>
+  <td>
+    Axis : <input type="number" step="5" min="0" max="180" id="vd_odA"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_odA">-</span></div>
+  </td>
+</tr>
+
+
+<tr><th colspan="4">FC DC Status Left Eye <button class="vtbn" onclick="toggleLE()"> Show / Hide </button>
 </th></tr>
 <tr class="le-row" data-eye="left" style="display:none; border-bottom:none">
 <td style="border-bottom:none"colspan="4">
@@ -1576,20 +1618,18 @@ function copyRightToLeft(){
 </div>
 </td></tr>
 
-<tr class="le-row" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span id="balanceLeft"></span>
-</td></tr>
 
 
-<tr style="border-top:1px dotted lightgrey">
-<td class="le-row" style="display:none; border-top:none"colspan="4">
-<span id="foggingLeft"></span><span id="perpendicular-axis-le"></span><br><br>FC CYL: <span id="balance-le"></span><br><br>
+<tr>
+<td class="le-row" style="display:none; border-top:none;"colspan="4">
+<span id="foggingLeft"></span><span id="perpendicular-axis-le"></span><br><br>
 
 
 <div class="fc-row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:5%;width:100%;">
 
   <!-- +0.00 FC -->
   <div id="fc-block-le" class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>NOW</span>
+    <span>NOW + FOG</span>
     <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1610,7 +1650,7 @@ function copyRightToLeft(){
 
   <!-- +0.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+0.50 CYL</span>
+    <span>+0.50 CYL + FOG</span>
     <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1631,7 +1671,7 @@ function copyRightToLeft(){
 
   <!-- +1.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+1.00 CYL</span>
+    <span>+1.00 CYL + FOG</span>
     <select class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1652,7 +1692,7 @@ function copyRightToLeft(){
 
   <!-- +1.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+1.50 CYL</span>
+    <span>+1.50 CYL + FOG</span>
     <select class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1673,7 +1713,7 @@ function copyRightToLeft(){
 
   <!-- +2.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-    <span>+2.00 CYL</span>
+    <span>+2.00 CYL + FOG</span>
     <select class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
@@ -1692,12 +1732,33 @@ function copyRightToLeft(){
     </select>
   </div>
 
-
-
 </div>
-<br><br>
+
+<tr class="le-row" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceLeft"></span> FC CYL: <span id="balance-le"></span><br>
+</td></tr>
+
 
 </td></tr>
+<tr class="le-row" style="display:none">
+  <td>FC DC Bal L<br>
+    <div style="margin-top:5px">
+      <button onclick="copyVD_OS()" style="border-radius:10px; width:70px; height:25px">Use LE</button>
+    </div>
+  </td>
+  <td>
+    Sph : <input type="number" step="0.25" id="vd_osS"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_osS">-</span></div>
+  </td>
+  <td>
+    Cyl : <input type="number" step="0.25" id="vd_osC"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_osC">-</span></div>
+  </td>
+  <td>
+    Axis : <input type="number" step="5" min="0" max="180" id="vd_osA"><br>
+    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_osA">-</span></div>
+  </td>
+
+</tr>
 
 <script>
 function toggleRE(){
@@ -1711,6 +1772,9 @@ function toggleLE(){
     r.style.display = r.style.display === "none" ? "" : "none";
   });
 }
+
+
+
 </script>
 
 <script>
@@ -1802,7 +1866,7 @@ function updateFC(blockId, spanId){
   if(result !== null){
     result = result - 0.25;
     const power = (result > 0 ? "+" : "") + result.toFixed(2);
-    document.getElementById(spanId).textContent = power + " AXIS: " + nowAxis;
+    document.getElementById(spanId).innerHTML = power + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AXIS: " + nowAxis;
   } else {
     document.getElementById(spanId).textContent = "";
   }
@@ -1956,65 +2020,6 @@ const clockMap = {
 </div>
 
 <table>
-
-<tr>
-  <td>FC DC Bal BE<br><div style="margin-top:5px"><button onclick="copyVD_OU_to_ODOS()" style="border-radius:10px; width:70px; height:25px">Use BE</button></div></td>
-  <td>
-     Sph : <input type="number" step="0.25" id="vd_ouS"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_ouS">-</span></div>
-  </td>
-  <td>
-    Cyl : <input type="number" step="0.25" id="vd_ouC"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_ouC">-</span></div>
-  </td>
-  <td>
-    Axis : <input type="number" step="5" min="0" max="180" id="vd_ouA"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_ouA">-</span></div>
-  </td>
-</tr>
-
-<tr>
-  <td>FC DC Bal R<br><div style="margin-top:5px"><button onclick="copyVD_OD()" style="border-radius:10px; width:70px; height:25px">Use RE</button></div></td>
-  <td>
-     Sph : <input type="number" step="0.25" id="vd_odS"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_odS">-</span></div>
-  </td>
-  <td>
-    Cyl : <input type="number" step="0.25" id="vd_odC"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_odC">-</span></div>
-  </td>
-  <td>
-    Axis : <input type="number" step="5" min="0" max="180" id="vd_odA"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_odA">-</span></div>
-  </td>
-</tr>
-
-<tr>
-  <td>FC DC Bal L<br>
-    <div style="margin-top:5px">
-      <button onclick="copyVD_OS()" style="border-radius:10px; width:70px; height:25px">Use LE</button>
-    </div>
-  </td>
-  <td>
-    Sph : <input type="number" step="0.25" id="vd_osS"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_osS">-</span></div>
-  </td>
-  <td>
-    Cyl : <input type="number" step="0.25" id="vd_osC"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_osC">-</span></div>
-  </td>
-  <td>
-    Axis : <input type="number" step="5" min="0" max="180" id="vd_osA"><br>
-    <div style="margin-top:2px"><span style="margin-right:15px" id="vd_out_osA">-</span></div>
-  </td>
-
-</tr>
-<tr style="border:none; height:10px;">
-  <td style="border:none; height:1px; padding:0;"></td>
-  <td style="border:none; height:1px; padding:0;"></td>
-  <td style="border:none; height:1px; padding:0;"></td>
-  <td style="border:none; height:1px; padding:0;"></td>
-</tr>
 
 <tr>
   <td>Vector Changes R<br>
@@ -2910,7 +2915,7 @@ function toggleStatusManual() {
 
 <table>
 
-<tr><th colspan="4" >Summary for <span id="customerName_summary"></span>
+<tr><th colspan="4" >Summary for <span class="customerName_summary"></span>
 <span id="todayDate"></span>
 </th></tr>
 <tr style="border:none; height:10px;">
@@ -3982,8 +3987,10 @@ function copyText() {
 
 <script>
 function updateCustomerName() {
-  document.getElementById("customerName_summary").textContent =
-    document.getElementById("customerName").value;
+  const value = document.getElementById("customerName").value;
+  document.querySelectorAll(".customerName_summary").forEach(el => {
+    el.textContent = value;
+  });
 }
 </script>
 
