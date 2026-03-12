@@ -55,16 +55,16 @@ html, body, table, th, td, input, button, select, option, b, label {
   transition: opacity 1s linear, transform 0.2s ease;
   }
 
-th.red, td.red {
+th.red, td.red, tr.red {
   background: #E0E0E0;
   color: black;
 }
 
-th.yellow, td.yellow, button.yellow {
+th.yellow, tr.yellow, td.yellow, button.yellow {
   background: #d8c7c5;
   color: black;
 }
-th.blue, td.blue, button.blue{
+th.blue, tr.blue, td.blue, button.blue{
   background: #d1dfe4;
   color: black;
 }
@@ -163,8 +163,7 @@ border: 1px dotted;
 
 
 .vbtn {
-padding:5px;
-width:50px;
+padding:2px 12px;
 }
 
 
@@ -476,7 +475,7 @@ button.active {
 
 
 
-<td class="blue" colspan="2" style="border-left:none;" >Whatsapp : <input type="text" id="customerWhatsapp" style="width:65%; height:20px"placeholder="6012 3456 789"></td>
+<td class="blue" colspan="2" style="border-left:none;" >Whatsapp : <input type="text" id="customerWhatsapp" style="width:65%; height:20px"placeholder="6012 3456 789" oninput="updateCustomerWhatsapp()"></td>
 
 </tr>
 <tr>
@@ -1016,11 +1015,12 @@ function copyRightToLeft(){
   <td style="border:none; height:1px; padding:0;"></td>
 </tr>
 <tr><th colspan="4">
-<span class="customerName_summary"></span>
+RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span class="customerWhatsapp_summary">...</span>
+
 </th></tr>
 
 <tr><th colspan="4">FC DC Status Both Eye</th></tr>
-<tr data-eye="both" style="border-bottom:none">
+<tr class="yellow" data-eye="both" style="border-bottom:none">
 <td style="border-bottom:none" colspan="4">
 <div class="vectorhelper-row" style="display:grid;grid-template-columns:repeat(9,1fr);gap:5px;width:100%;">
 
@@ -1123,7 +1123,7 @@ function copyRightToLeft(){
 </td></tr>
 
 
-<tr style="border-top:1px dotted lightgrey">
+<tr class="yellow" style="border-top:1px dotted lightgrey">
 <td style="border-top:none"colspan="4">
 <span id="foggingBoth"></span><span id="perpendicular-axis-ou"></span><br><br>
 
@@ -1239,11 +1239,11 @@ function copyRightToLeft(){
 </div>
 </td></tr>
 
-<tr style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceBoth"></span>FC CYL: <span id="balance-ou"></span>
+<tr class="yellow" style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceBoth"></span>FC CYL: <span id="balance-ou"></span>
 
 </td></tr>
 
-<tr>
+<tr class="yellow">
   <td>FC DC Bal BE<br><div style="margin-top:5px"><button onclick="copyVD_OU_to_ODOS()" style="border-radius:10px; width:70px; height:25px">Use BE</button></div></td>
   <td>
      Sph : <input type="number" step="0.25" id="vd_ouS"><br>
@@ -2096,14 +2096,23 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 <div class="controls">
 <div style="margin-top:10px; display:flex; gap:7%; align-items:flex-start; justify-content:center">
 
-  <div>
-    <b>Current RX</b><br><br>
+<div><b>Right Input</b><br>--<br>
+<button class="vbtn" type="button" onclick="saveRight()">Save</button><br>
+<button class="vbtn" type="button" onclick="loadRight()">Load</button><br><br>
 
-    
-    <button class="vbtn" type="button" onclick="adjust('visual_s1', -1)">--</button>
-    <button class="vbtn" type="button" onclick="adjust('visual_s1', 1)">++</button>
+<b>Left Input</b><br>--<br>
+<button class="vbtn" type="button" onclick="saveLeft()">Save</button><br>
+<button class="vbtn" type="button" onclick="loadLeft()">Load</button>
+</div>
+
+  <div>
+    <b>Current RX</b><br>(Reset) <button class="vbtn" type="button" onclick="resetValue('visual_s1')">S</button> <button class="vbtn" type="button" onclick="resetValue('visual_c1')">C</button> <button class="vbtn" type="button" onclick="resetValue('visual_a1')">A</button><br><br>
+
+
+<button class="vbtn" type="button" onclick="adjust('visual_s1', -1)">--</button>
+    <button class="vbtn" type="button" onclick="adjust('visual_s1', 1)">++</button>&nbsp;&nbsp;
  S: 
-    <input style="width:60px" type="number" id="visual_s1" step="0.25" value="0">
+    <input style="width:60px" type="number" id="visual_s1" step="0.25" value="0">&nbsp;&nbsp;
     <button class="vbtn" type="button" onclick="adjust('visual_s1', -0.25)">-</button>
     <button class="vbtn" type="button" onclick="adjust('visual_s1', 0.25)">+</button>
 
@@ -2111,9 +2120,9 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 
 
     <button class="vbtn" type="button" onclick="adjust('visual_c1', -1)">--</button>
-    <button class="vbtn" type="button" onclick="adjust('visual_c1', 1)">++</button>
+    <button class="vbtn" type="button" onclick="adjust('visual_c1', 1)">++</button>&nbsp;&nbsp;
      C: 
-    <input style="width:60px" type="number" id="visual_c1" step="0.25" value="0">
+    <input style="width:60px" type="number" id="visual_c1" step="0.25" value="0">&nbsp;&nbsp;
     <button  class="vbtn" type="button" onclick="adjust('visual_c1', -0.25)">-</button>
     <button  class="vbtn" type="button" onclick="adjust('visual_c1', 0.25)">+</button>
 
@@ -2121,9 +2130,9 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 <br><br>
 
     <button class="vbtn"  type="button" onclick="adjust('visual_a1', -15)">--</button>
-    <button class="vbtn"  type="button" onclick="adjust('visual_a1', 15)">++</button>
+    <button class="vbtn"  type="button" onclick="adjust('visual_a1', 15)">++</button>&nbsp;&nbsp;
      A: 
-    <input style="width:60px" type="number" id="visual_a1" step="1" value="180" min="0" max="180">
+    <input style="width:60px" type="number" id="visual_a1" step="1" value="180" min="0" max="180">&nbsp;&nbsp;
     <button class="vbtn"  type="button" onclick="adjust('visual_a1', -1)">-</button>
     <button class="vbtn"  type="button" onclick="adjust('visual_a1', 1)">+</button>
 
@@ -2134,10 +2143,11 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 
 
   <div>
-    <b>Vector Changes</b><br><br>
+    <b>Vector Changes</b><br>(Reset) <button class="vbtn" type="button" onclick="resetValue('visual_s2')">S</button> <button class="vbtn" type="button" onclick="resetValue('visual_c2')">C</button> <button class="vbtn" type="button" onclick="resetValue('visual_a2')">A</button><br><br>
+
 
      S: 
-    <input style="width:60px" type="number" id="visual_s2" step="0.25" value="0">
+    <input style="width:60px" type="number" id="visual_s2" step="0.25" value="0">&nbsp;&nbsp;
     <button class="vbtn"  type="button" onclick="adjust('visual_s2', -0.25)">-</button>
     <button class="vbtn"  type="button" onclick="adjust('visual_s2', 0.25)">+</button>
 
@@ -2145,7 +2155,7 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 <br><br>
 
      C: 
-    <input style="width:60px" type="number" id="visual_c2" step="0.25" value="0">
+    <input style="width:60px" type="number" id="visual_c2" step="0.25" value="0">&nbsp;&nbsp;
     <button class="vbtn"  type="button" onclick="adjust('visual_c2', -0.25)">-</button>
     <button class="vbtn"  type="button" onclick="adjust('visual_c2', 0.25)">+</button>
 
@@ -2153,23 +2163,24 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 <br><br>
 
      A: 
-    <input style="width:60px" type="number" id="visual_a2" step="1" value="180" min="0" max="180">
+    <input style="width:60px" type="number" id="visual_a2" step="1" value="180" min="0" max="180">&nbsp;&nbsp;
     <button class="vbtn"  type="button" onclick="adjust('visual_a2', -15)">-</button>
     <button class="vbtn"  type="button" onclick="adjust('visual_a2', 15)">+</button>
 
 
 
   </div>
-
-
 </div>
+
+
+
+
+
 
 <div style="margin-top:10px; margin-bottom:5px; display:flex; gap:7%; align-items:flex-start; justify-content:center">
 
 <div><br>
-  <span style="font-size:20px; font-weight:400">Final RX
-
-  &nbsp;&nbsp;&nbsp;<span id="visual_combinedSpan">0.00 0.00 x 0</span>
+  <span style="font-size:20px; font-weight:400">Final RX <span id="lastLoaded"> </span>&nbsp<span id="visual_combinedSpan">0.00 0.00 x 0</span>
   </span>
 
 
@@ -2542,7 +2553,104 @@ if(bgImage.complete){
   ctx.restore();
 }
 
+function resetValue(...ids){
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    el.value = 0;
+
+    // update color
+    if(el.tagName === "INPUT") colorInput(el);
+
+    // trigger input event so any other listeners run
+    el.dispatchEvent(new Event("input"));
+  });
+
+  // recalc final RX and redraw
+  combinePrescriptions();
+  draw();
+}
+
 draw();
+
+
+function saveRight(){
+  const rx = {
+    s1: s1.value,
+    c1: c1.value,
+    a1: a1.value,
+    s2: s2.value,
+    c2: c2.value,
+    a2: a2.value
+  };
+
+  localStorage.setItem("rxRight", JSON.stringify(rx));
+}
+
+function loadRight(){
+  const rx = JSON.parse(localStorage.getItem("rxRight"));
+  if(!rx) return;
+
+  s1.value = rx.s1;
+  c1.value = rx.c1;
+  a1.value = rx.a1;
+
+  s2.value = rx.s2;
+  c2.value = rx.c2;
+  a2.value = rx.a2;
+
+  colorInput(s1);
+  colorInput(c1);
+  colorInput(s2);
+  colorInput(c2);
+
+combinePrescriptions(); 
+  draw();
+
+  // Update indicator
+  document.getElementById("lastLoaded").innerText = "Right";
+}
+
+
+function saveLeft(){
+  const rx = {
+    s1: s1.value,
+    c1: c1.value,
+    a1: a1.value,
+    s2: s2.value,
+    c2: c2.value,
+    a2: a2.value
+  };
+
+  localStorage.setItem("rxLeft", JSON.stringify(rx));
+}
+
+function loadLeft(){
+  const rx = JSON.parse(localStorage.getItem("rxLeft"));
+  if(!rx) return;
+
+  s1.value = rx.s1;
+  c1.value = rx.c1;
+  a1.value = rx.a1;
+
+  s2.value = rx.s2;
+  c2.value = rx.c2;
+  a2.value = rx.a2;
+
+  colorInput(s1);
+  colorInput(c1);
+  colorInput(s2);
+  colorInput(c2);
+
+combinePrescriptions(); 
+  draw();
+
+  // Update indicator
+  document.getElementById("lastLoaded").innerText = "Left";
+}
+
+draw();
+
+
 </script>
 
 
@@ -3994,7 +4102,14 @@ function updateCustomerName() {
 }
 </script>
 
-
+<script>
+function updateCustomerWhatsapp() {
+  const value = document.getElementById("customerWhatsapp").value;
+  document.querySelectorAll(".customerWhatsapp_summary").forEach(el => {
+    el.textContent = value;
+  });
+}
+</script>
 
 <script>
 function mirrorById(sourceId, mirrorId) {
