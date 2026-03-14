@@ -494,15 +494,6 @@ button.active {
   <td class="blue" colspan="4" style="height:150px; text-align:center; padding:20px; vertical-align:middle; ">
 </td></tr>
 
-
-
-
-
-
-
-
-
-
 </table>
 
 </div>
@@ -512,9 +503,6 @@ button.active {
 <table>
 
 <tr><th class="red" colspan="4">Current RX</th></tr>
-
-
-
 <tr style="border:none; height:10px;">
   <td style="border:none; height:1px; padding:0;"></td>
   <td style="border:none; height:1px; padding:0;"></td>
@@ -596,105 +584,6 @@ button.active {
 <tr><td colspan="4"><span>Overcorrection Predictor : </span><span id="overcorrectionComment"> - </td>
 </tr>
 
-
-<script>
-function analyzeAgeAdd() {
-  const age = parseInt(document.getElementById("age").value);
-  let add = "";
-
-  if (!age || age < 1) {
-    add = "Enter a valid age.";
-  } else if (age < 37) {
-    add = "Normal add is +0.00";
-  } else if (age < 43) {
-    add = "Normal add is +0.25 to +0.50";
-  } else if (age < 45) {
-    add = "Normal add is +0.50 to +0.75";
-  } else if (age < 47) {
-    add = "Normal add is +0.75 to +1.00";
-  } else if (age < 49) {
-    add = "Normal add is +1.00 to +1.25";
-  } else if (age < 51) {
-    add = "Normal add is +1.25 to +1.50";
-  } else if (age < 53) {
-    add = "Normal add is +1.50 to +1.75";
-  } else if (age < 55) {
-    add = "Normal add is +1.75 to +2.00";
-  } else if (age < 57) {
-    add = "Normal add is +2.00 to +2.25";
-  } else if (age < 59) {
-    add = "Normal add is +2.25 to +2.50";
-  } else if (age < 61) {
-    add = "Normal add is +2.50";
-  } else {
-    add = "Normal add is +2.50";
-  }
-
-  document.getElementById("addComment").innerText = add;
-
-const nearAddVal = document.getElementById("nearAdd").value;
-if (nearAddVal !== "") {
-  checkOvercorrection(add);
-} else {
-  document.getElementById("overcorrectionComment").innerText = "";
-}
-}
-
-function parseNormalAdd(normalAddStr) {
-  const match = normalAddStr.match(/\+([\d.]+)/g);
-  if (!match) return 0;
-  const values = match.map(s => parseFloat(s.replace("+","")));
-  return { min: Math.min(...values), max: Math.max(...values) };
-}
-
-function checkOvercorrection(normalAddStr) {
-  const normalAdd = parseNormalAdd(normalAddStr);
-  const nearAdd = parseFloat(document.getElementById("nearAdd").value);
-  const commentEl = document.getElementById("overcorrectionComment");
-
-if (nearAdd === "" || nearAdd === null || isNaN(nearAdd)) {
-  commentEl.innerText = "";
-  return;
-}
-  // Overcorrection
-  else if (nearAdd > normalAdd.max) {
-    const diffMin = (nearAdd - normalAdd.max).toFixed(2);
-    const diffMax = (nearAdd - normalAdd.min).toFixed(2);
-    commentEl.innerText = `Possible overcorrection by +${diffMin} to +${diffMax}`;
-    commentEl.style.color = "red";
-  } 
-  // Below normal
-  else if (nearAdd < normalAdd.min) {
-    const diffMin = (normalAdd.min - nearAdd).toFixed(2);
-    const diffMax = (normalAdd.max - nearAdd).toFixed(2);
-    commentEl.innerText = `Near add below normal by +${diffMin} to +${diffMax}`;
-    commentEl.style.color = "green";
-  } 
-  // Within range
-  else {
-    commentEl.innerText = "Near add within normal range";
-    commentEl.style.color = "green";
-  }
-}
-
-// Trigger when age changes
-document.getElementById("age").addEventListener("input", analyzeAgeAdd);
-
-// Trigger when nearAdd changes
-document.getElementById("nearAdd").addEventListener("input", function() {
-  const normalAddStr = document.getElementById("addComment").innerText;
-  if (normalAddStr.includes("Normal add")) {
-    checkOvercorrection(normalAddStr);
-  } else {
-    document.getElementById("overcorrectionComment").innerText = "";
-  }
-});
-</script>
-
-
-
-
-
 <tr><th class="red" colspan="4">Current Fitting Details - <i>Measure the PD and the NOC (middle of nosepad to optical center)</i></th></tr>
 <tr>
   <td>Right</td>
@@ -726,14 +615,6 @@ document.getElementById("nearAdd").addEventListener("input", function() {
 </div>
 </td>
 </tr>
-
-<script>
-function copyRightToLeft(){
-  document.getElementById("os_PD").value  = document.getElementById("od_PD").value;
-  document.getElementById("os_NOC").value = document.getElementById("od_NOC").value;
-}
-</script>
-
 
 
 <tr><th class="red" colspan="4">Please Press Update All! 
@@ -924,68 +805,7 @@ function copyRightToLeft(){
 
 </table>
 
-<script>
-(function() {
-  const table = document.getElementById('BT_bttTable');
-  const tableRows = table.querySelectorAll('tbody tr');
-  const nowSelect = document.getElementById('BT_select_0'); // directly get 0 select
-  const nowSpan = document.getElementById('BT_nowStatus');
-  const improvementSpan = document.getElementById('BT_improvementList');
-  const noDiffSpan = document.getElementById('BT_noDiffList');
-  const moreDisSpan = document.getElementById('BT_slightDisList');
-
-  function clearResults() {
-    nowSpan.innerHTML = '';
-    improvementSpan.innerHTML = '';
-    noDiffSpan.innerHTML = '';
-    moreDisSpan.innerHTML = '';
-  }
-
-  function appendResult(spanContainer, power) {
-    if (spanContainer.innerHTML !== '') spanContainer.appendChild(document.createTextNode(', '));
-    const span = document.createElement('span');
-    span.innerText = power;
-    span.style.color = power.startsWith('+') ? 'green' : (power.startsWith('-') ? 'red' : 'black');
-    spanContainer.appendChild(span);
-  }
-
-  function BT_aggregateResults() {
-    clearResults();
-
-    // handle 0 separately
-    const value0 = nowSelect.value;
-    if (value0) nowSpan.innerText = value0 === 'normal' ? 'Normal' : 'Slight Discomfort';
-
-    // handle rest of the powers
-    tableRows.forEach(row => {
-      row.querySelectorAll('td').forEach((cell, index) => {
-        const select = cell.querySelector('select');
-        if (!select || select.id === 'BT_select_0') return; // skip 0
-        const power = row.cells[index - 1]?.innerText.trim();
-        if (!power) return;
-        const value = select.value;
-        if (!value) return;
-
-        if (value === 'improvement') appendResult(improvementSpan, power);
-        else if (value === 'no-difference') appendResult(noDiffSpan, power);
-        else if (value === 'more-discomfort') appendResult(moreDisSpan, power);
-      });
-    });
-  }
-
-  document.getElementById('BT_showResultsBtn')
-          .addEventListener('click', BT_aggregateResults);
-})();
-
-</script>
-
-
-
-
 </div>
-
-
-
 
 
     <div id="s2" class="section">
@@ -1618,8 +1438,6 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 </div>
 </td></tr>
 
-
-
 <tr>
 <td class="le-row" style="display:none; border-top:none;"colspan="4">
 <span id="foggingLeft"></span><span id="perpendicular-axis-le"></span><br><br>
@@ -1760,262 +1578,6 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
 </tr>
 
-<script>
-function toggleRE(){
-  document.querySelectorAll(".re-row").forEach(r=>{
-    r.style.display = r.style.display === "none" ? "" : "none";
-  });
-}
-
-function toggleLE(){
-  document.querySelectorAll(".le-row").forEach(r=>{
-    r.style.display = r.style.display === "none" ? "" : "none";
-  });
-}
-
-
-
-</script>
-
-<script>
-function getPerpendicular(axis){
-  return (parseInt(axis) + 90) % 180;
-}
-
-function axisDiff(a,b){
-  let d = Math.abs(a-b);
-  return Math.min(d,180-d);
-}
-
-function updateFC(blockId, spanId){
-
-  const block = document.getElementById(blockId);
-  if(!block) return;
-
-  const nowSelect = block.querySelector(".fc_duo");
-  const nowAxis = nowSelect.value;
-
-  const allSelects = block.parentElement.querySelectorAll(".fc_duo");
-
-  // reset all styles
-  allSelects.forEach(sel=>{
-    sel.style.backgroundColor = "";
-    sel.querySelectorAll("option").forEach(opt=>{
-      opt.style.backgroundColor = "";
-    });
-  });
-
-  if(nowAxis === "n/a"){
-    document.getElementById(spanId).textContent = "";
-    return;
-  }
-
-  // If NOW is Bal, show 0 × 0
-  if(nowAxis === "bal"){
-    document.getElementById(spanId).textContent = " 0 × 0";
-    return;
-  }
-
-  const perp = getPerpendicular(nowAxis);
-
-  let balPower = null;
-  let perpPower = null;
-
-  allSelects.forEach(sel => {
-
-    const rx = parseFloat(sel.dataset.rx);
-
-    sel.querySelectorAll("option").forEach(opt=>{
-
-      const val = opt.value;
-
-      if(val === "bal"){
-        if(sel.value === "bal") balPower = rx;
-        return;
-      }
-
-      if(!isNaN(val)){
-        const axis = parseInt(val);
-
-        if(axisDiff(axis, perp) <= 15){
-          opt.style.backgroundColor = "orange";
-
-          if(sel.value == val){
-            sel.style.backgroundColor = "orange";
-            perpPower = rx;
-          }
-        }
-      }
-
-    });
-
-  });
-
-  let result = null;
-
-  if(balPower !== null && perpPower !== null){
-    result = Math.min(balPower, perpPower);
-  } 
-  else if(balPower !== null){
-    result = balPower;
-  } 
-  else if(perpPower !== null){
-    result = perpPower;
-  }
-
-  if(result !== null){
-    result = result - 0.25;
-    const power = (result > 0 ? "+" : "") + result.toFixed(2);
-    document.getElementById(spanId).innerHTML = power + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AXIS: " + nowAxis;
-  } else {
-    document.getElementById(spanId).textContent = "";
-  }
-}
-
-document.querySelectorAll(".fc_duo").forEach(sel=>{
-  sel.addEventListener("change", ()=>{
-    updateFC("fc-block-le","balance-le");
-    updateFC("fc-block-re","balance-re");
-    updateFC("fc-block-ou","balance-ou");
-  });
-});
-</script>
-
-
-
-
-<script>
-function snapToQuarter(v) {
-  return Math.round(v * 4) / 4;
-}
-
-function calculateBalanceByEye(eye, resultSpanId) {
-  const row = document.querySelector(`tr[data-eye="${eye}"]`);
-  if (!row) return;
-
-  const selects = row.querySelectorAll("select.vectorhelper_duo");
-  let reds = [], blues = [];
-
-  selects.forEach(sel => {
-    const rx = parseFloat(sel.dataset.rx);
-    if (sel.value === "red")  reds.push(rx);
-    if (sel.value === "blue") blues.push(rx);
-  });
-
-  let balance = null;
-
-  if (reds.length && blues.length) {
-    let nearest = Infinity;
-    reds.forEach(r => {
-      blues.forEach(b => {
-        const d = Math.abs(r - b);
-        if (d < nearest) {
-          nearest = d;
-          balance = (r + b) / 2;
-        }
-      });
-    });
-    balance = snapToQuarter(balance);
-  }
-
-  const span = document.getElementById(resultSpanId);
-  if (!span) return;
-
-  span.innerText = balance === null
-    ? "N/A"
-    : (balance > 0 ? "+" : "") + balance.toFixed(2);
-}
-
-function updateFogging(balanceId, foggingId) {
-  const b = document.getElementById(balanceId);
-  const f = document.getElementById(foggingId);
-  if (!b || !f) return;
-
-  if (b.innerText === "N/A") {
-    f.innerText = "Fogging N/A.";
-    return;
-  }
-
-  const v = parseFloat(b.innerText);
-  if (isNaN(v)) {
-    f.innerText = "Fogging N/A.";
-    return;
-  }
-
-  const fog = snapToQuarter(v + 0.75);
-  f.innerText =
-    "Apply " + (fog > 0 ? "+" : "") + fog.toFixed(2) + " SPH all the time during Fan Chart Test.";
-}
-
-function recalcAll() {
-  calculateBalanceByEye("both",  "balanceBoth");
-  calculateBalanceByEye("right", "balanceRight");
-  calculateBalanceByEye("left",  "balanceLeft");
-
-  updateFogging("balanceBoth",  "foggingBoth");
-  updateFogging("balanceRight", "foggingRight");
-  updateFogging("balanceLeft",  "foggingLeft");
-}
-
-document.querySelectorAll(".vectorhelper_duo").forEach(sel => {
-  sel.addEventListener("change", recalcAll);
-});
-
-recalcAll();
-</script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-const clockMap = {
-  "180": "3-9 (180)",
-  "15": "3:30-9:30 (15)",
-  "30": "4-10 (30)",
-  "45": "4:30-10:30 (45)",
-  "60": "5-11 (60)",
-  "75": "5:30-11:30 (75)",
-  "90": "6-12 (90)",
-  "105": "6:30-12:30 (105)",
-  "120": "7-1 (120)",
-  "135": "7:30-1:30 (135)",
-  "150": "8-2 (150)",
-  "165": "8:30-2:30 (165)"
-};
-
-
-  // sides you use in IDs
-  const sides = ['ou', 're', 'le'];
-
-  sides.forEach(side => {
-    const sel = document.querySelector(`#fc-block-${side} select.fc_duo`);
-    const span = document.getElementById(`perpendicular-axis-${side}`);
-    if (!sel || !span) {
-      console.warn(`Missing elements for fc-block-${side}`, { sel, span });
-      return;
-    }
-
-    const update = () => {
-      const val = sel.value;
-      if (val in clockMap) {
-        let deg = (parseInt(val, 10) + 90) % 180;
-        if (deg === 0) deg = 180;
-        span.innerText = ' Stop when ' + clockMap[deg] + ' is darker.';
-      } else {
-        span.innerText = ' Over CYL N/A';
-      }
-    };
-
-    sel.addEventListener('change', update);
-
-    // set initial display based on current select value
-    update();
-  });
-});
-</script>
-
-
-
-
 </table>
 </div>
 
@@ -2085,13 +1647,7 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 
 </tr>
 
-
-
-
 <tr><td colspan="4">
-
-
-
 
 <div class="controls">
 <div style="margin-top:10px; display:flex; gap:7%; align-items:flex-start; justify-content:center">
@@ -2136,11 +1692,7 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
     <button class="vbtn"  type="button" onclick="adjust('visual_a1', -1)">-</button>
     <button class="vbtn"  type="button" onclick="adjust('visual_a1', 1)">+</button>
 
-
-
-
   </div>
-
 
   <div>
     <b>Vector Changes</b><br>(Reset) <button class="vbtn" type="button" onclick="resetValue('visual_s2')">S</button> <button class="vbtn" type="button" onclick="resetValue('visual_c2')">C</button> <button class="vbtn" type="button" onclick="resetValue('visual_a2')">A</button><br><br>
@@ -2151,14 +1703,12 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
     <button class="vbtn"  type="button" onclick="adjust('visual_s2', -0.25)">-</button>
     <button class="vbtn"  type="button" onclick="adjust('visual_s2', 0.25)">+</button>
 
-
 <br><br>
 
      C: 
     <input style="width:60px" type="number" id="visual_c2" step="0.25" value="0">&nbsp;&nbsp;
     <button class="vbtn"  type="button" onclick="adjust('visual_c2', -0.25)">-</button>
     <button class="vbtn"  type="button" onclick="adjust('visual_c2', 0.25)">+</button>
-
 
 <br><br>
 
@@ -2168,14 +1718,8 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
     <button class="vbtn"  type="button" onclick="adjust('visual_a2', 15)">+</button>
 
 
-
   </div>
 </div>
-
-
-
-
-
 
 <div style="margin-top:10px; margin-bottom:5px; display:flex; gap:7%; align-items:flex-start; justify-content:center">
 
@@ -2202,19 +1746,13 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 <button id="togglePlano">Plano</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <button id="toggleAxis">Axis</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
-
   Zoom:
   <button id="zoomOut">−</button>
   <button id="zoomIn">+</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-
-
-
   <span style="color:black;">— Current RX</span> &nbsp;&nbsp;&nbsp;
   <span style="color:red;">— New RX</span> &nbsp;&nbsp;&nbsp;
     <span style="color:black;">⋯⋯ Zero RX</span><br><br>
-
 
 
 <span> A zero powered eye is roughly 24mm. Every 1.00 diopters of correction is roughyly 0.33mm difference from baseline. </span>
@@ -2229,40 +1767,9 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 
 </div>
 
-
-
 <div style="margin-bottom:20px"></div>
 
-
-
-<script>
-function adjust(id, delta){
-  const input = document.getElementById(id);
-  let newValue = parseFloat(input.value || 0) + delta;
-
-  // Only apply to axis inputs
-  if(id.includes('_a')){
-    // Wrap around 1–180
-    newValue = ((newValue - 1 + 180) % 180) + 1;
-  }
-
-  // Round to step
-  const step = parseFloat(input.step) || 1;
-  newValue = Math.round(newValue / step) * step;
-
-  input.value = newValue;
-
-  // Trigger redraw/color update
-  input.dispatchEvent(new Event('input'));
-  input.dispatchEvent(new Event('change'));
-}
-</script>
-
-
 <canvas id="visual_canvas" width="570" height="500"></canvas>
-
-
-
 
 <br>
 
@@ -2271,411 +1778,7 @@ function adjust(id, delta){
 <div id="visual_savedRows"></div>
 
 
-
-
-
-
-
-
-<script>
-const bgImage = new Image();
-bgImage.src = "https://raw.githubusercontent.com/kiaraoptometrypx/trainer_light/main/FCBG.jpg";
-const canvas = document.getElementById("visual_canvas");
-const ctx = canvas.getContext("2d");
-
-let showPlanoCircle = false;
-let showAxisLines = false;
-
-const togglePlanoBtn = document.getElementById("togglePlano");
-const toggleAxisBtn = document.getElementById("toggleAxis");
-
-togglePlanoBtn.onclick = () => {
-  showPlanoCircle = !showPlanoCircle;
-  togglePlanoBtn.innerText = showPlanoCircle ? "Plano" : "Plano ";
-  draw();
-};
-
-toggleAxisBtn.onclick = () => {
-  showAxisLines = !showAxisLines;
-  toggleAxisBtn.innerText = showAxisLines ? "Axis" : "Axis";
-  draw();
-};
-
-
-const cy = canvas.height/2+20;
-const cx = canvas.width/2;
-
-const planoRadius = 120;
-let actualScale = false;
-
-const BASE_SCALE_ACTUAL = 1.666;   // your current real scale
-const BASE_SCALE_VISUAL = 16;   // half scale visualiser
-
-const toggleBaseScaleBtn = document.getElementById("toggleBaseScale");
-
-toggleBaseScaleBtn.onclick = () => {
-  actualScale = !actualScale;
-
-  toggleBaseScaleBtn.innerText = actualScale 
-    ? "Actual" 
-    : "Demo";
-
-  draw();
-};
-
-
-/* ===== Inputs ===== */
-const s1 = document.getElementById("visual_s1");
-const c1 = document.getElementById("visual_c1");
-const a1 = document.getElementById("visual_a1");
-
-const s2 = document.getElementById("visual_s2");
-const c2 = document.getElementById("visual_c2");
-const a2 = document.getElementById("visual_a2");
-
-const s3 = document.getElementById("visual_s3");
-const c3 = document.getElementById("visual_c3");
-const a3 = document.getElementById("visual_a3");
-
-/* ===== State ===== */
-let zoomLevel = 0.8;
-let showCurrent = true;
-let showFinal = true;
-let circlelockFinal = true;
-
-/* ===== Buttons ===== */
-const toggle1 = document.getElementById("visual_toggle1");
-const toggle3 = document.getElementById("visual_toggle3");
-const circlelockBtn = document.getElementById("visual_lockCombined");
-
-/* ===== Real Zoom ===== */
-document.getElementById("zoomIn").onclick = () => {
-  zoomLevel *= 1.2;
-  draw();
-};
-
-document.getElementById("zoomOut").onclick = () => {
-  zoomLevel /= 1.2;
-  draw();
-};
-
-/* ===== Lock Final ===== */
-circlelockBtn.classList.add("active");
-circlelockBtn.innerText = "Unlock Final RX";
-
-circlelockBtn.onclick = () => {
-  circlelockFinal = !lockFinal;
-  circlelockBtn.classList.toggle("active", lockFinal);
-  circlelockBtn.innerText = circlelockFinal ? "Unlock Final RX" : "Lock Final RX";
-  draw();
-};
-
-/* ===== Toggle Circles ===== */
-toggle1.onclick = () => {
-  showCurrent = !showCurrent;
-  toggle1.classList.toggle("active", showCurrent);
-  draw();
-};
-
-toggle3.onclick = () => {
-  showFinal = !showFinal;
-  toggle3.classList.toggle("active", showFinal);
-  draw();
-};
-
-/* ===== Snap + Color ===== */
-function colorInput(inp){
-  inp.style.color = parseFloat(inp.value) < 0 ? "red" : "darkblue";
-}
-
-[s1,c1,s2,c2,s3,c3].forEach(inp=>{
-  inp.addEventListener("input", ()=>{ colorInput(inp); draw(); });
-  inp.addEventListener("change", ()=>{
-    inp.value = (Math.round(parseFloat(inp.value)*4)/4).toFixed(2);
-    colorInput(inp);
-    draw();
-  });
-});
-
-[a1,a2,a3].forEach(inp=>{
-  inp.addEventListener("input", ()=>{ inp.value = Math.round(parseFloat(inp.value)); draw(); });
-  inp.addEventListener("change", ()=>{ inp.value = Math.round(parseFloat(inp.value)); draw(); });
-});
-
-[s1,c1,s2,c2,s3,c3].forEach(colorInput);
-
-function drawPlanoBaseline(){
-  if(!showPlanoCircle) return;
-
-  ctx.save();
-  ctx.translate(cx, cy);
-
-  ctx.beginPath();
-  ctx.arc(0, 0, planoRadius * zoomLevel, 0, 2 * Math.PI);
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 1;
-  ctx.setLineDash([3,3]);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  ctx.restore();
-}
-
-/* ===== Draw Ellipse ===== */
-function drawEllipse(S,C,A,color){
-
-const scale = actualScale ? BASE_SCALE_ACTUAL : BASE_SCALE_VISUAL;
-
-const rAxis = (planoRadius - (S * scale)) * zoomLevel;
-const rPerp = (planoRadius - ((S + C) * scale)) * zoomLevel;
-
-ctx.save();
-ctx.translate(cx, cy);
-ctx.rotate(A*Math.PI/180);
-
-ctx.beginPath();
-ctx.ellipse(0,0,rAxis,rPerp,0,0,2*Math.PI);
-ctx.strokeStyle = color;
-ctx.lineWidth = 1;
-ctx.stroke();
-
-/* Axis guide line */
-if(C !== 0 && showAxisLines){
-  const lineLength = (rAxis + rPerp)/2;
-
-  ctx.setLineDash([4,4]);
-  ctx.beginPath();
-  ctx.moveTo(0,-lineLength);
-  ctx.lineTo(0,lineLength);
-  ctx.strokeStyle = color;
-  ctx.stroke();
-  ctx.setLineDash([]);
-}
-
-ctx.restore();
-}
-
-
-/* ===== Combine Prescriptions ===== */
-function combinePrescriptions(){
-  const circles = [
-    {S:+s1.value, C:+c1.value, A:+a1.value},
-    {S:+s2.value, C:+c2.value, A:+a2.value}
-  ];
-
-  let M=0,J0=0,J45=0;
-
-  circles.forEach(c=>{
-    const rad = c.A*Math.PI/180;
-    M += c.S + c.C/2;
-    J0 += -(c.C/2)*Math.cos(2*rad);
-    J45 += -(c.C/2)*Math.sin(2*rad);
-  });
-
-  const Ctotal = -2*Math.sqrt(J0**2 + J45**2);
-  let axis = 0.5*Math.atan2(J45,J0)*180/Math.PI;
-  if(axis<0) axis+=180;
-
-  const Stotal = M - Ctotal/2;
-
-  const Sr = (Math.round(Stotal*4)/4).toFixed(2);
-  const SrDis = (Sr > 0 ? "+" : "") + Sr;
-  const Cr = (Math.round(Ctotal*4)/4).toFixed(2);
-  const Ar = Math.round(axis);
-
-  const span = document.getElementById("visual_combinedSpan");
-  span.innerText = ` ${SrDis} / ${Cr} x ${Ar}`;
-  span.style.color = "black";
-
-  if(circlelockFinal){
-    s3.value = Sr;
-    c3.value = Cr;
-    a3.value = Ar;
-    colorInput(s3);
-    colorInput(c3);
-  }
-
-  return `${Sr} ${Cr} x ${Ar}`;
-}
-
-/* ===== Draw ===== */
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-
-
-if(bgImage.complete){
-  const imgRatio = bgImage.width / bgImage.height;
-  const canvasRatio = canvas.width / canvas.height;
-
-  let sx, sy, sWidth, sHeight;
-
-  if(canvasRatio > imgRatio){
-    // Canvas is wider → crop top & bottom
-    sWidth = bgImage.width;
-    sHeight = bgImage.width / canvasRatio;
-    sx = 0;
-    sy = (bgImage.height - sHeight)/2;
-  } else {
-    // Canvas is taller → crop left & right
-    sHeight = bgImage.height;
-    sWidth = bgImage.height * canvasRatio;
-    sx = (bgImage.width - sWidth)/2;
-    sy = 0;
-  }
-
-  ctx.drawImage(bgImage, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
-} else {
-  bgImage.onload = () => draw();
-}
-
-  ctx.save();
-
-  // Move origin to center
-  ctx.translate(cx, cy);
-
-  // Rotate canvas 90 degrees clockwise
-  ctx.rotate(Math.PI / 2);
-
-  // Move back origin so drawEllipse still works with 0,0 center
-  ctx.translate(-cx, -cy);
-
-  drawPlanoBaseline();   // baseline first
-
-  if(showCurrent)
-    drawEllipse(+s1.value,+c1.value,+a1.value,"black");
-
-  if(showFinal)
-    drawEllipse(+s3.value,+c3.value,+a3.value,"red");
-
-  combinePrescriptions();
-
-  ctx.restore();
-}
-
-function resetValue(...ids){
-  ids.forEach(id=>{
-    const el = document.getElementById(id);
-    el.value = 0;
-
-    // update color
-    if(el.tagName === "INPUT") colorInput(el);
-
-    // trigger input event so any other listeners run
-    el.dispatchEvent(new Event("input"));
-  });
-
-  // recalc final RX and redraw
-  combinePrescriptions();
-  draw();
-}
-
-draw();
-
-
-function saveRight(){
-  const rx = {
-    s1: s1.value,
-    c1: c1.value,
-    a1: a1.value,
-    s2: s2.value,
-    c2: c2.value,
-    a2: a2.value
-  };
-
-  localStorage.setItem("rxRight", JSON.stringify(rx));
-}
-
-function loadRight(){
-  const rx = JSON.parse(localStorage.getItem("rxRight"));
-  if(!rx) return;
-
-  s1.value = rx.s1;
-  c1.value = rx.c1;
-  a1.value = rx.a1;
-
-  s2.value = rx.s2;
-  c2.value = rx.c2;
-  a2.value = rx.a2;
-
-  colorInput(s1);
-  colorInput(c1);
-  colorInput(s2);
-  colorInput(c2);
-
-combinePrescriptions(); 
-  draw();
-
-  // Update indicator
-  document.getElementById("lastLoaded").innerText = "Right";
-}
-
-
-function saveLeft(){
-  const rx = {
-    s1: s1.value,
-    c1: c1.value,
-    a1: a1.value,
-    s2: s2.value,
-    c2: c2.value,
-    a2: a2.value
-  };
-
-  localStorage.setItem("rxLeft", JSON.stringify(rx));
-}
-
-function loadLeft(){
-  const rx = JSON.parse(localStorage.getItem("rxLeft"));
-  if(!rx) return;
-
-  s1.value = rx.s1;
-  c1.value = rx.c1;
-  a1.value = rx.a1;
-
-  s2.value = rx.s2;
-  c2.value = rx.c2;
-  a2.value = rx.a2;
-
-  colorInput(s1);
-  colorInput(c1);
-  colorInput(s2);
-  colorInput(c2);
-
-combinePrescriptions(); 
-  draw();
-
-  // Update indicator
-  document.getElementById("lastLoaded").innerText = "Left";
-}
-
-draw();
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </td></tr>
-
-
-
-
-
-
-
-
 
 <tr><th class="yellow" colspan="4">Please Press Update All! 
 <button style="margin-left:10px; border-radius:10px; height:25px; width:100px" class="updateAllBtn">Update All</button>
@@ -2686,23 +1789,6 @@ Status : <button id="statusVector"
         onclick="toggleStatusVector()">
   Not Done - Invalid
 </button>
-<script>
-function toggleStatusVector() {
-  const btn = document.getElementById("statusVector");
-
-  if (btn.dataset.value === "Not Done - Invalid") {
-    btn.dataset.value = "done";
-    btn.textContent = "Done - Valid";
-    btn.style.backgroundColor = "#444";
-    btn.style.color = "white";
-  } else {
-    btn.dataset.value = "Not Done - Invalid";
-    btn.textContent = "Not Done - Invalid";
-    btn.style.backgroundColor = ""; // revert to original
-    btn.style.color = "";           // revert to original
-  }
-}
-</script>
 
 
 
@@ -2932,22 +2018,6 @@ Status : <button id="statusManual"
         onclick="toggleStatusManual()">
   Not Done - Invalid
 </button>
-<script>
-function toggleStatusManual() {
-  const btn = document.getElementById("statusManual");
-  if (btn.dataset.value === "Not Done - Invalid") {
-    btn.dataset.value = "done";
-    btn.textContent = "Done - Valid";
-    btn.style.backgroundColor = "#444";
-    btn.style.color = "white";
-  } else {
-    btn.dataset.value = "Not Done - Invalid";
-    btn.textContent = "Not Done - Invalid";
-    btn.style.backgroundColor = ""; // revert to original
-    btn.style.color = "";           // revert to original
-  }
-}
-</script>
 
 <button style="margin-left:10px; border-radius:10px; height:25px; width:65px" class="exportBtn">
     Save
@@ -3240,160 +2310,6 @@ NOC :
 <div id="dateOutput" style="font-weight:bold;"></div><br>
 
 
-
-<script>
-// Public holidays (Selangor + KL 2025–2026)
-const PUBLIC_HOLIDAYS = new Set([
-  "2025-01-01","2025-01-29","2025-01-30","2025-02-01","2025-02-03",
-  "2025-02-11","2025-03-18","2025-03-31","2025-04-01","2025-05-01",
-  "2025-05-12","2025-06-02","2025-06-07","2025-06-27","2025-08-31",
-  "2025-09-01","2025-09-05","2025-09-15","2025-09-16","2025-10-20",
-  "2025-12-11","2025-12-25","2026-01-01","2026-02-01","2026-02-02",
-  "2026-02-17","2026-02-18","2026-03-07","2026-03-21","2026-03-22",
-  "2026-03-23","2026-05-01","2026-05-27","2026-05-31","2026-06-01",
-  "2026-06-17","2026-08-25","2026-08-31","2026-09-16","2026-11-08",
-  "2026-11-09","2026-12-11","2026-12-25"
-]);
-
-const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-
-function getOrdinal(n) {
-  let s=["th","st","nd","rd"], v=n%100;
-  return n + (s[(v-20)%10]||s[v]||s[0]);
-}
-
-function addWorkingDays(date, days) {
-  let result = new Date(date);
-  while (days > 0) {
-    result.setDate(result.getDate() + 1);
-    let day = result.getDay();
-    let dateStr = result.toISOString().split('T')[0];
-    if (day !== 0 && day !== 6 && !PUBLIC_HOLIDAYS.has(dateStr)) {
-      days--;
-    }
-  }
-  return result;
-}
-
-function formatDateWithDay(d) {
-  const months = ["January","February","March","April","May","June",
-                  "July","August","September","October","November","December"];
-  return `${getOrdinal(d.getDate())} ${months[d.getMonth()]} ${DAYS[d.getDay()]}`;
-}
-
-function calculateWorkingDays() {
-  let today = new Date();
-  let threeDays = addWorkingDays(today, 3);
-  let sevenDays = addWorkingDays(today, 7+1);
-
-  // Express option: 3 working days → 2 working days
-  let expressThree = addWorkingDays(today, 2);
-
-  document.getElementById('dateOutput').innerHTML = `
-    Today is ${formatDateWithDay(today)} , 
-     Completion Estimated ${formatDateWithDay(sevenDays)}.
-  `;
-}
-
-// Auto-calculate on page load
-calculateWorkingDays();
-</script>
-
-
-
-<script>
-function formatRM(amount) {
-  return 'RM ' + Math.round(amount).toLocaleString();
-}
-
-function calculateStandardDiscount() {
-  let p1 = parseFloat(document.getElementById('priceInput').value) || 0;
-  let p2 = parseFloat(document.getElementById('input2').value) || 0;
-  let p3 = parseFloat(document.getElementById('input3').value) || 0;
-
-  let price = p1 + p2 + p3;
-
-  if (price <= 0) {
-    document.getElementById('output').innerHTML = '<em>Please enter price.</em>';
-    return;
-  }
-
-let discount = 0;
-if (price <= 249) discount = 0;
-else if (price <= 299) discount = 10;
-else if (price <= 699) discount = 15;
-else discount = 20;
-
-
-  let netPrice = price * (1 - discount / 100);
-
-document.getElementById('output').innerHTML = `
-  Original Price : ${formatRM(price)}<br>
-  Net Price : ${formatRM(netPrice)}<br>
-  ${discount > 0 ? `Description : ${discount}% off until March 2026!<br>` : ``}
-`;
-
-}
-
-function calculateNoExamDiscount() {
-  let p1 = parseFloat(document.getElementById('priceInput').value) || 0;
-  let p2 = parseFloat(document.getElementById('input2').value) || 0;
-  let p3 = parseFloat(document.getElementById('input3').value) || 0;
-
-  let price = p1 + p2 + p3;
-
-  if (price <= 0) {
-    document.getElementById('output').innerHTML = '<br><em>Please enter price.</em>';
-    return;
-  }
-
-  let discount = 30;
-  let netPrice = price * (1 - discount / 100);
-  if (netPrice < 200) netPrice = 200;
-
-  document.getElementById('output').innerHTML = `<br>
-    Original Price : ${formatRM(price)}<br>
-    No-Eye-Exam Net Price : ${formatRM(netPrice)}<br>
-  `;
-}
-
-function applyRCode() {
-  // Sum all 3 inputs
-  let p1 = parseFloat(document.getElementById('priceInput').value) || 0;
-  let p2 = parseFloat(document.getElementById('input2').value) || 0;
-  let p3 = parseFloat(document.getElementById('input3').value) || 0;
-  let price = p1 + p2 + p3;
-
-  if (price <= 0) {
-    document.getElementById('output').innerHTML = '<em>Please enter price.</em>';
-    return;
-  }
-
-  // Base discount logic
-  let discount = 0;
-  if (price <= 249) discount = 0;
-  else if (price <= 299) discount = 10;
-  else if (price <= 699) discount = 15;
-  else discount = 20;
-
-  // Extra 5% R-Code
-  discount += 5;
-
-  let netPrice = price * (1 - discount / 100);
-
-  document.getElementById('output').innerHTML = `
-    Original Price : ${formatRM(price)}<br>
-    Net Price : ${formatRM(netPrice)}<br>
-${discount > 0 ? `Description : ${discount}% off (<span style="color:red; font-weight:bold;">R-Code!</span>)<br>` : ``}
-  `;
-}
-
-</script>
-
-
-
-
-
 <div style="margin-top:20px; flex:1; overflow:hidden; text-align:left;">
 
   <!-- INTRO -->
@@ -3436,28 +2352,6 @@ ${discount > 0 ? `Description : ${discount}% off (<span style="color:red; font-w
 </td>
 </tr>
 
-<script>
-const TOTAL_IMAGES = 8;
-const BASE_URL = "https://raw.githubusercontent.com/kiaraoptometrypx/super_rx/main/";
-
-(function preloadImages() {
-  for (let i = 1; i <= TOTAL_IMAGES; i++) {
-    const img = new Image();
-    img.src = BASE_URL + "mey" + i + ".jpg";
-  }
-})();
-
-function showImg(n){
-  const img = document.getElementById('meyImage');
-
-  img.style.opacity = 0;
-
-  setTimeout(() => {
-    img.src = BASE_URL + "mey" + n + ".jpg";
-    img.style.opacity = 1;
-  }, 150); // half of transition time
-}
-</script>
 
 
 
@@ -3684,46 +2578,6 @@ Prescription comes in many types of errors; whether it's myopia, hyperopia or as
   .rx-active { background:#ccc; }
 </style>
 
-<script>
-let activeBtn = { sph: null, cyl: null };
-
-// Your original setRx function
-function setRx(field, value){
-  const el = document.getElementById(field);
-  el.value = Number(value).toFixed(2);
-
-  // force same behavior as clicking +/- buttons
-  el.dispatchEvent(new Event('input', { bubbles:true }));
-  el.dispatchEvent(new Event('change', { bubbles:true }));
-
-  if (typeof updateAll === 'function') updateAll();
-  if (typeof redraw === 'function') redraw();
-}
-
-// New wrapper for highlighting + calling setRx
-function highlightRx(btn, field, value){
-  if(activeBtn[field]) activeBtn[field].classList.remove('rx-active');
-  btn.classList.add('rx-active');
-  activeBtn[field] = btn;
-
-  setRx(field, value);
-}
-
-// Reset everything
-function resetRx(){
-  if(activeBtn.sph) activeBtn.sph.classList.remove('rx-active');
-  if(activeBtn.cyl) activeBtn.cyl.classList.remove('rx-active');
-  activeBtn.sph = null;
-  activeBtn.cyl = null;
-
-  setRx('sph', 0.00);
-  setRx('cyl', 0.00);
-  setRx('axis', 180);
-}
-</script>
-
-
-
 </div>
 <div style="height:20px"></div>
 
@@ -3926,13 +2780,7 @@ function resetRx(){
 </div>
 
 
-
-
 <div style="height:20px"></div>
-
-
-
-
 
 
 </td></tr>
@@ -3970,28 +2818,16 @@ function resetRx(){
 &bull; They simply reduce eye strain and make near vision more comfortable.<br>
 
 
-
 </div>
 </td></tr>
 
 </table>
 
-
-
-
-
 </div>
 <div style="height:750px"></div>
 <div style="height:750px"></div>
 <div style="height:750px"></div>
 <div style="height:750px"></div>
-
-
-
-
-
-
-
 
     <div id="s5" class="section">
 <div style="height:70px"></div>
@@ -4007,22 +2843,6 @@ function resetRx(){
 <button id="copyBtn"  onclick="copyText()">Copy</button>
 
 </div>
-<script>
-function screener() {
-  const el = document.getElementById("screenerPanel");
-  el.style.display = (el.style.display === "none" || el.style.display === "")
-    ? "block"
-    : "none";
-}
-
-function copyText() {
-  const text = document.getElementById("screenerText").innerText;
-  navigator.clipboard.writeText(text);
-  document.getElementById("copyBtn").innerText = "Copied";
-}
-</script>
-
-
 
 
 <div id="screenerPanel" style="display:none;">
@@ -4060,23 +2880,21 @@ function copyText() {
 
 
 <div style="height: 150px"></div>
-
-
-
 </div>
-
 </div>
-
-
-
 </div>
-
-
-
 </div>
   </main>
 
 
+
+// ---- SCRIPT STARTS HERE ---- //
+// ---- SCRIPT STARTS HERE ---- //
+// ---- SCRIPT STARTS HERE ---- //
+// ---- SCRIPT STARTS HERE ---- //
+// ---- SCRIPT STARTS HERE ---- //
+// ---- SCRIPT STARTS HERE ---- //
+// ---- SCRIPT STARTS HERE ---- //
 
 
 
@@ -6784,9 +5602,1122 @@ function openSummary() {
 
 
 
+// ----- FOR FC DC STATUS HELPER --- //
+
+<script>
+function toggleRE(){
+  document.querySelectorAll(".re-row").forEach(r=>{
+    r.style.display = r.style.display === "none" ? "" : "none";
+  });
+}
+
+function toggleLE(){
+  document.querySelectorAll(".le-row").forEach(r=>{
+    r.style.display = r.style.display === "none" ? "" : "none";
+  });
+}
 
 
 
+</script>
+
+<script>
+const clockMap = {
+  "180": "3-9 (180)",
+  "15": "3:30-9:30 (15)",
+  "30": "4-10 (30)",
+  "45": "4:30-10:30 (45)",
+  "60": "5-11 (60)",
+  "75": "5:30-11:30 (75)",
+  "90": "6-12 (90)",
+  "105": "6:30-12:30 (105)",
+  "120": "7-1 (120)",
+  "135": "7:30-1:30 (135)",
+  "150": "8-2 (150)",
+  "165": "8:30-2:30 (165)"
+};
+
+function getPerpendicular(axis){
+  return (parseInt(axis) + 90) % 180;
+}
+
+function axisDiff(a,b){
+  let d = Math.abs(a-b);
+  return Math.min(d,180-d);
+}
+
+function updateFC(blockId, spanId){
+  const block = document.getElementById(blockId);
+  if(!block) return;
+
+  const nowSelect = block.querySelector(".fc_duo");
+  const nowAxis = nowSelect.value;
+  const allSelects = block.parentElement.querySelectorAll(".fc_duo");
+
+  // reset all select styles and option texts
+  allSelects.forEach(sel => {
+    sel.style.backgroundColor = "";
+    sel.querySelectorAll("option").forEach(opt => {
+      const val = opt.value;
+      if(val in clockMap) opt.textContent = clockMap[val];
+      else if(val === "bal") opt.textContent = "Bal";
+      else if(val === "n/a") opt.textContent = "N/A";
+    });
+  });
+
+  if(nowAxis === "n/a"){
+    document.getElementById(spanId).textContent = "";
+    return;
+  }
+
+  if(nowAxis === "bal"){
+    document.getElementById(spanId).textContent = "0 × 0";
+    return;
+  }
+
+  const perp = getPerpendicular(nowAxis);
+  let balPower = null;
+  let perpPower = null;
+
+  allSelects.forEach(sel => {
+    const rx = parseFloat(sel.dataset.rx);
+
+    sel.querySelectorAll("option").forEach(opt => {
+      const val = opt.value;
+
+      if(val === "bal"){
+        if(sel.value === "bal") balPower = rx;
+        return;
+      }
+
+      if(!isNaN(val)){
+        const axis = parseInt(val);
+
+        if(axisDiff(axis, perp) <= 15){
+          // append marker for perpendicular
+          opt.textContent = clockMap[val] + " ** R ** "
+
+          // highlight the select itself if currently chosen
+          if(sel.value == val){
+            sel.style.backgroundColor = "orange";
+            perpPower = rx;
+          }
+        }
+      }
+    });
+  });
+
+  // calculate result
+  let result = null;
+  if(balPower !== null && perpPower !== null) result = Math.min(balPower, perpPower);
+  else if(balPower !== null) result = balPower;
+  else if(perpPower !== null) result = perpPower;
+
+  // update result span
+  if(result !== null){
+    result = result - 0.25;
+    const power = (result > 0 ? "+" : "") + result.toFixed(2);
+    document.getElementById(spanId).innerHTML = power + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AXIS: " + nowAxis;
+  } else {
+    document.getElementById(spanId).textContent = "";
+  }
+}
+
+// attach change events
+document.querySelectorAll(".fc_duo").forEach(sel=>{
+  sel.addEventListener("change", ()=>{
+    updateFC("fc-block-le","balance-le");
+    updateFC("fc-block-re","balance-re");
+    updateFC("fc-block-ou","balance-ou");
+  });
+});
+</script>
+
+
+
+<script>
+function snapToQuarter(v) {
+  return Math.round(v * 4) / 4;
+}
+
+function calculateBalanceByEye(eye, resultSpanId) {
+  const row = document.querySelector(`tr[data-eye="${eye}"]`);
+  if (!row) return;
+
+  const selects = row.querySelectorAll("select.vectorhelper_duo");
+  let reds = [], blues = [];
+
+  selects.forEach(sel => {
+    const rx = parseFloat(sel.dataset.rx);
+    if (sel.value === "red")  reds.push(rx);
+    if (sel.value === "blue") blues.push(rx);
+  });
+
+  let balance = null;
+
+  if (reds.length && blues.length) {
+    let nearest = Infinity;
+    reds.forEach(r => {
+      blues.forEach(b => {
+        const d = Math.abs(r - b);
+        if (d < nearest) {
+          nearest = d;
+          balance = (r + b) / 2;
+        }
+      });
+    });
+    balance = snapToQuarter(balance);
+  }
+
+  const span = document.getElementById(resultSpanId);
+  if (!span) return;
+
+  span.innerText = balance === null
+    ? "N/A"
+    : (balance > 0 ? "+" : "") + balance.toFixed(2);
+}
+
+function updateFogging(balanceId, foggingId) {
+  const b = document.getElementById(balanceId);
+  const f = document.getElementById(foggingId);
+  if (!b || !f) return;
+
+  if (b.innerText === "N/A") {
+    f.innerText = "Fogging N/A.";
+    return;
+  }
+
+  const v = parseFloat(b.innerText);
+  if (isNaN(v)) {
+    f.innerText = "Fogging N/A.";
+    return;
+  }
+
+  const fog = snapToQuarter(v + 0.75);
+  f.innerText =
+    "Apply " + (fog > 0 ? "+" : "") + fog.toFixed(2) + " SPH all the time during Fan Chart Test.";
+}
+
+function recalcAll() {
+  calculateBalanceByEye("both",  "balanceBoth");
+  calculateBalanceByEye("right", "balanceRight");
+  calculateBalanceByEye("left",  "balanceLeft");
+
+  updateFogging("balanceBoth",  "foggingBoth");
+  updateFogging("balanceRight", "foggingRight");
+  updateFogging("balanceLeft",  "foggingLeft");
+}
+
+document.querySelectorAll(".vectorhelper_duo").forEach(sel => {
+  sel.addEventListener("change", recalcAll);
+});
+
+recalcAll();
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const clockMap = {
+  "180": "3-9 (180)",
+  "15": "3:30-9:30 (15)",
+  "30": "4-10 (30)",
+  "45": "4:30-10:30 (45)",
+  "60": "5-11 (60)",
+  "75": "5:30-11:30 (75)",
+  "90": "6-12 (90)",
+  "105": "6:30-12:30 (105)",
+  "120": "7-1 (120)",
+  "135": "7:30-1:30 (135)",
+  "150": "8-2 (150)",
+  "165": "8:30-2:30 (165)"
+};
+
+
+  // sides you use in IDs
+  const sides = ['ou', 're', 'le'];
+
+  sides.forEach(side => {
+    const sel = document.querySelector(`#fc-block-${side} select.fc_duo`);
+    const span = document.getElementById(`perpendicular-axis-${side}`);
+    if (!sel || !span) {
+      console.warn(`Missing elements for fc-block-${side}`, { sel, span });
+      return;
+    }
+
+    const update = () => {
+      const val = sel.value;
+      if (val in clockMap) {
+        let deg = (parseInt(val, 10) + 90) % 180;
+        if (deg === 0) deg = 180;
+        span.innerText = ' Stop when ' + clockMap[deg] + ' is darker.';
+      } else {
+        span.innerText = ' Over CYL N/A';
+      }
+    };
+
+    sel.addEventListener('change', update);
+
+    // set initial display based on current select value
+    update();
+  });
+});
+</script>
+
+
+
+
+// ---- Age Add Analysis ---- //
+
+<script>
+function analyzeAgeAdd() {
+  const age = parseInt(document.getElementById("age").value);
+  let add = "";
+
+  if (!age || age < 1) {
+    add = "Enter a valid age.";
+  } else if (age < 37) {
+    add = "Normal add is +0.00";
+  } else if (age < 43) {
+    add = "Normal add is +0.25 to +0.50";
+  } else if (age < 45) {
+    add = "Normal add is +0.50 to +0.75";
+  } else if (age < 47) {
+    add = "Normal add is +0.75 to +1.00";
+  } else if (age < 49) {
+    add = "Normal add is +1.00 to +1.25";
+  } else if (age < 51) {
+    add = "Normal add is +1.25 to +1.50";
+  } else if (age < 53) {
+    add = "Normal add is +1.50 to +1.75";
+  } else if (age < 55) {
+    add = "Normal add is +1.75 to +2.00";
+  } else if (age < 57) {
+    add = "Normal add is +2.00 to +2.25";
+  } else if (age < 59) {
+    add = "Normal add is +2.25 to +2.50";
+  } else if (age < 61) {
+    add = "Normal add is +2.50";
+  } else {
+    add = "Normal add is +2.50";
+  }
+
+  document.getElementById("addComment").innerText = add;
+
+const nearAddVal = document.getElementById("nearAdd").value;
+if (nearAddVal !== "") {
+  checkOvercorrection(add);
+} else {
+  document.getElementById("overcorrectionComment").innerText = "";
+}
+}
+
+function parseNormalAdd(normalAddStr) {
+  const match = normalAddStr.match(/\+([\d.]+)/g);
+  if (!match) return 0;
+  const values = match.map(s => parseFloat(s.replace("+","")));
+  return { min: Math.min(...values), max: Math.max(...values) };
+}
+
+function checkOvercorrection(normalAddStr) {
+  const normalAdd = parseNormalAdd(normalAddStr);
+  const nearAdd = parseFloat(document.getElementById("nearAdd").value);
+  const commentEl = document.getElementById("overcorrectionComment");
+
+if (nearAdd === "" || nearAdd === null || isNaN(nearAdd)) {
+  commentEl.innerText = "";
+  return;
+}
+  // Overcorrection
+  else if (nearAdd > normalAdd.max) {
+    const diffMin = (nearAdd - normalAdd.max).toFixed(2);
+    const diffMax = (nearAdd - normalAdd.min).toFixed(2);
+    commentEl.innerText = `Possible overcorrection by +${diffMin} to +${diffMax}`;
+    commentEl.style.color = "red";
+  } 
+  // Below normal
+  else if (nearAdd < normalAdd.min) {
+    const diffMin = (normalAdd.min - nearAdd).toFixed(2);
+    const diffMax = (normalAdd.max - nearAdd).toFixed(2);
+    commentEl.innerText = `Near add below normal by +${diffMin} to +${diffMax}`;
+    commentEl.style.color = "green";
+  } 
+  // Within range
+  else {
+    commentEl.innerText = "Near add within normal range";
+    commentEl.style.color = "green";
+  }
+}
+
+// Trigger when age changes
+document.getElementById("age").addEventListener("input", analyzeAgeAdd);
+
+// Trigger when nearAdd changes
+document.getElementById("nearAdd").addEventListener("input", function() {
+  const normalAddStr = document.getElementById("addComment").innerText;
+  if (normalAddStr.includes("Normal add")) {
+    checkOvercorrection(normalAddStr);
+  } else {
+    document.getElementById("overcorrectionComment").innerText = "";
+  }
+});
+</script>
+
+
+<script>
+(function() {
+  const table = document.getElementById('BT_bttTable');
+  const tableRows = table.querySelectorAll('tbody tr');
+  const nowSelect = document.getElementById('BT_select_0'); // directly get 0 select
+  const nowSpan = document.getElementById('BT_nowStatus');
+  const improvementSpan = document.getElementById('BT_improvementList');
+  const noDiffSpan = document.getElementById('BT_noDiffList');
+  const moreDisSpan = document.getElementById('BT_slightDisList');
+
+  function clearResults() {
+    nowSpan.innerHTML = '';
+    improvementSpan.innerHTML = '';
+    noDiffSpan.innerHTML = '';
+    moreDisSpan.innerHTML = '';
+  }
+
+  function appendResult(spanContainer, power) {
+    if (spanContainer.innerHTML !== '') spanContainer.appendChild(document.createTextNode(', '));
+    const span = document.createElement('span');
+    span.innerText = power;
+    span.style.color = power.startsWith('+') ? 'green' : (power.startsWith('-') ? 'red' : 'black');
+    spanContainer.appendChild(span);
+  }
+
+  function BT_aggregateResults() {
+    clearResults();
+
+    // handle 0 separately
+    const value0 = nowSelect.value;
+    if (value0) nowSpan.innerText = value0 === 'normal' ? 'Normal' : 'Slight Discomfort';
+
+    // handle rest of the powers
+    tableRows.forEach(row => {
+      row.querySelectorAll('td').forEach((cell, index) => {
+        const select = cell.querySelector('select');
+        if (!select || select.id === 'BT_select_0') return; // skip 0
+        const power = row.cells[index - 1]?.innerText.trim();
+        if (!power) return;
+        const value = select.value;
+        if (!value) return;
+
+        if (value === 'improvement') appendResult(improvementSpan, power);
+        else if (value === 'no-difference') appendResult(noDiffSpan, power);
+        else if (value === 'more-discomfort') appendResult(moreDisSpan, power);
+      });
+    });
+  }
+
+  document.getElementById('BT_showResultsBtn')
+          .addEventListener('click', BT_aggregateResults);
+})();
+
+</script>
+
+<script>
+function copyRightToLeft(){
+  document.getElementById("os_PD").value  = document.getElementById("od_PD").value;
+  document.getElementById("os_NOC").value = document.getElementById("od_NOC").value;
+}
+</script>
+
+
+
+
+
+
+<script>
+const bgImage = new Image();
+bgImage.src = "https://raw.githubusercontent.com/kiaraoptometrypx/trainer_light/main/FCBG.jpg";
+const canvas = document.getElementById("visual_canvas");
+const ctx = canvas.getContext("2d");
+
+let showPlanoCircle = false;
+let showAxisLines = false;
+
+const togglePlanoBtn = document.getElementById("togglePlano");
+const toggleAxisBtn = document.getElementById("toggleAxis");
+
+togglePlanoBtn.onclick = () => {
+  showPlanoCircle = !showPlanoCircle;
+  togglePlanoBtn.innerText = showPlanoCircle ? "Plano" : "Plano ";
+  draw();
+};
+
+toggleAxisBtn.onclick = () => {
+  showAxisLines = !showAxisLines;
+  toggleAxisBtn.innerText = showAxisLines ? "Axis" : "Axis";
+  draw();
+};
+
+
+const cy = canvas.height/2+20;
+const cx = canvas.width/2;
+
+const planoRadius = 120;
+let actualScale = false;
+
+const BASE_SCALE_ACTUAL = 1.666;   // your current real scale
+const BASE_SCALE_VISUAL = 16;   // half scale visualiser
+
+const toggleBaseScaleBtn = document.getElementById("toggleBaseScale");
+
+toggleBaseScaleBtn.onclick = () => {
+  actualScale = !actualScale;
+
+  toggleBaseScaleBtn.innerText = actualScale 
+    ? "Actual" 
+    : "Demo";
+
+  draw();
+};
+
+
+/* ===== Inputs ===== */
+const s1 = document.getElementById("visual_s1");
+const c1 = document.getElementById("visual_c1");
+const a1 = document.getElementById("visual_a1");
+
+const s2 = document.getElementById("visual_s2");
+const c2 = document.getElementById("visual_c2");
+const a2 = document.getElementById("visual_a2");
+
+const s3 = document.getElementById("visual_s3");
+const c3 = document.getElementById("visual_c3");
+const a3 = document.getElementById("visual_a3");
+
+/* ===== State ===== */
+let zoomLevel = 0.8;
+let showCurrent = true;
+let showFinal = true;
+let circlelockFinal = true;
+
+/* ===== Buttons ===== */
+const toggle1 = document.getElementById("visual_toggle1");
+const toggle3 = document.getElementById("visual_toggle3");
+const circlelockBtn = document.getElementById("visual_lockCombined");
+
+/* ===== Real Zoom ===== */
+document.getElementById("zoomIn").onclick = () => {
+  zoomLevel *= 1.2;
+  draw();
+};
+
+document.getElementById("zoomOut").onclick = () => {
+  zoomLevel /= 1.2;
+  draw();
+};
+
+/* ===== Lock Final ===== */
+circlelockBtn.classList.add("active");
+circlelockBtn.innerText = "Unlock Final RX";
+
+circlelockBtn.onclick = () => {
+  circlelockFinal = !circlelockFinal;
+  circlelockBtn.classList.toggle("active", lockFinal);
+  circlelockBtn.innerText = circlelockFinal ? "Unlock Final RX" : "Lock Final RX";
+  draw();
+};
+
+/* ===== Toggle Circles ===== */
+toggle1.onclick = () => {
+  showCurrent = !showCurrent;
+  toggle1.classList.toggle("active", showCurrent);
+  draw();
+};
+
+toggle3.onclick = () => {
+  showFinal = !showFinal;
+  toggle3.classList.toggle("active", showFinal);
+  draw();
+};
+
+/* ===== Snap + Color ===== */
+function colorInput(inp){
+  inp.style.color = parseFloat(inp.value) < 0 ? "red" : "green";
+
+}
+
+
+
+
+[s1,c1,s2,c2,s3,c3].forEach(inp=>{
+  inp.addEventListener("input", ()=>{ colorInput(inp); draw(); });
+  inp.addEventListener("change", ()=>{
+    inp.value = (Math.round(parseFloat(inp.value)*4)/4).toFixed(2);
+    colorInput(inp);
+    draw();
+  });
+});
+
+[a1,a2,a3].forEach(inp=>{
+  inp.addEventListener("input", ()=>{ inp.value = Math.round(parseFloat(inp.value)); draw(); });
+  inp.addEventListener("change", ()=>{ inp.value = Math.round(parseFloat(inp.value)); draw(); });
+});
+
+[s1,c1,s2,c2,s3,c3].forEach(colorInput);
+
+function drawPlanoBaseline(){
+  if(!showPlanoCircle) return;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  ctx.beginPath();
+  ctx.arc(0, 0, planoRadius * zoomLevel, 0, 2 * Math.PI);
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3,3]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.restore();
+}
+
+/* ===== Draw Ellipse ===== */
+function drawEllipse(S,C,A,color){
+
+const scale = actualScale ? BASE_SCALE_ACTUAL : BASE_SCALE_VISUAL;
+
+const rAxis = (planoRadius - (S * scale)) * zoomLevel;
+const rPerp = (planoRadius - ((S + C) * scale)) * zoomLevel;
+
+ctx.save();
+ctx.translate(cx, cy);
+ctx.rotate(A*Math.PI/180);
+
+ctx.beginPath();
+ctx.ellipse(0,0,rAxis,rPerp,0,0,2*Math.PI);
+ctx.strokeStyle = color;
+ctx.lineWidth = 1;
+ctx.stroke();
+
+/* Axis guide line */
+if(C !== 0 && showAxisLines){
+  const lineLength = (rAxis + rPerp)/2;
+
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(0,-lineLength);
+  ctx.lineTo(0,lineLength);
+  ctx.strokeStyle = color;
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+ctx.restore();
+}
+
+
+/* ===== Combine Prescriptions ===== */
+function combinePrescriptions(){
+  const circles = [
+    {S:+s1.value, C:+c1.value, A:+a1.value},
+    {S:+s2.value, C:+c2.value, A:+a2.value}
+  ];
+
+  let M=0,J0=0,J45=0;
+
+  circles.forEach(c=>{
+    const rad = c.A*Math.PI/180;
+    M += c.S + c.C/2;
+    J0 += -(c.C/2)*Math.cos(2*rad);
+    J45 += -(c.C/2)*Math.sin(2*rad);
+  });
+
+  const Ctotal = -2*Math.sqrt(J0**2 + J45**2);
+  let axis = 0.5*Math.atan2(J45,J0)*180/Math.PI;
+  if(axis<0) axis+=180;
+
+  const Stotal = M - Ctotal/2;
+
+  const Sr = (Math.round(Stotal*4)/4).toFixed(2);
+  const SrDis = (Sr > 0 ? "+" : "") + Sr;
+  const Cr = (Math.round(Ctotal*4)/4).toFixed(2);
+  const Ar = Math.round(axis);
+
+  const span = document.getElementById("visual_combinedSpan");
+  span.innerText = ` ${SrDis} / ${Cr} x ${Ar}`;
+  span.style.color = "black";
+
+  if(circlelockFinal){
+    s3.value = Sr;
+    c3.value = Cr;
+    a3.value = Ar;
+    colorInput(s3);
+    colorInput(c3);
+  }
+
+  return `${Sr} ${Cr} x ${Ar}`;
+}
+
+/* ===== Draw ===== */
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+
+
+if(bgImage.complete){
+  const imgRatio = bgImage.width / bgImage.height;
+  const canvasRatio = canvas.width / canvas.height;
+
+  let sx, sy, sWidth, sHeight;
+
+  if(canvasRatio > imgRatio){
+    // Canvas is wider → crop top & bottom
+    sWidth = bgImage.width;
+    sHeight = bgImage.width / canvasRatio;
+    sx = 0;
+    sy = (bgImage.height - sHeight)/2;
+  } else {
+    // Canvas is taller → crop left & right
+    sHeight = bgImage.height;
+    sWidth = bgImage.height * canvasRatio;
+    sx = (bgImage.width - sWidth)/2;
+    sy = 0;
+  }
+
+  ctx.drawImage(bgImage, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+} else {
+  bgImage.onload = () => draw();
+}
+
+  ctx.save();
+
+  // Move origin to center
+  ctx.translate(cx, cy);
+
+  // Rotate canvas 90 degrees clockwise
+  ctx.rotate(Math.PI / 2);
+
+  // Move back origin so drawEllipse still works with 0,0 center
+  ctx.translate(-cx, -cy);
+
+  drawPlanoBaseline();   // baseline first
+
+  if(showCurrent)
+    drawEllipse(+s1.value,+c1.value,+a1.value,"black");
+
+  if(showFinal)
+    drawEllipse(+s3.value,+c3.value,+a3.value,"red");
+
+  combinePrescriptions();
+
+  ctx.restore();
+}
+
+function resetValue(...ids){
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    el.value = 0;
+
+    // update color
+    if(el.tagName === "INPUT") colorInput(el);
+
+    // trigger input event so any other listeners run
+    el.dispatchEvent(new Event("input"));
+  });
+
+  // recalc final RX and redraw
+  combinePrescriptions();
+  draw();
+}
+
+draw();
+
+
+function saveRight(){
+  const rx = {
+    s1: s1.value,
+    c1: c1.value,
+    a1: a1.value,
+    s2: s2.value,
+    c2: c2.value,
+    a2: a2.value
+  };
+
+  localStorage.setItem("rxRight", JSON.stringify(rx));
+}
+
+function loadRight(){
+  const rx = JSON.parse(localStorage.getItem("rxRight"));
+  if(!rx) return;
+
+  s1.value = rx.s1;
+  c1.value = rx.c1;
+  a1.value = rx.a1;
+
+  s2.value = rx.s2;
+  c2.value = rx.c2;
+  a2.value = rx.a2;
+
+  colorInput(s1);
+  colorInput(c1);
+  colorInput(s2);
+  colorInput(c2);
+
+combinePrescriptions(); 
+  draw();
+
+  // Update indicator
+  document.getElementById("lastLoaded").innerText = "Right";
+}
+
+
+function saveLeft(){
+  const rx = {
+    s1: s1.value,
+    c1: c1.value,
+    a1: a1.value,
+    s2: s2.value,
+    c2: c2.value,
+    a2: a2.value
+  };
+
+  localStorage.setItem("rxLeft", JSON.stringify(rx));
+}
+
+function loadLeft(){
+  const rx = JSON.parse(localStorage.getItem("rxLeft"));
+  if(!rx) return;
+
+  s1.value = rx.s1;
+  c1.value = rx.c1;
+  a1.value = rx.a1;
+
+  s2.value = rx.s2;
+  c2.value = rx.c2;
+  a2.value = rx.a2;
+
+  colorInput(s1);
+  colorInput(c1);
+  colorInput(s2);
+  colorInput(c2);
+
+combinePrescriptions(); 
+  draw();
+
+  // Update indicator
+  document.getElementById("lastLoaded").innerText = "Left";
+}
+
+draw();
+
+
+</script>
+
+
+
+<script>
+function toggleStatusVector() {
+  const btn = document.getElementById("statusVector");
+
+  if (btn.dataset.value === "Not Done - Invalid") {
+    btn.dataset.value = "done";
+    btn.textContent = "Done - Valid";
+    btn.style.backgroundColor = "#444";
+    btn.style.color = "white";
+  } else {
+    btn.dataset.value = "Not Done - Invalid";
+    btn.textContent = "Not Done - Invalid";
+    btn.style.backgroundColor = ""; // revert to original
+    btn.style.color = "";           // revert to original
+  }
+}
+</script>
+
+
+
+
+
+
+
+<script>
+function adjust(id, delta){
+  const input = document.getElementById(id);
+  let newValue = parseFloat(input.value || 0) + delta;
+
+  // Only apply to axis inputs
+  if(id.includes('_a')){
+    // Wrap around 1–180
+    newValue = ((newValue - 1 + 180) % 180) + 1;
+  }
+
+  // Round to step
+  const step = parseFloat(input.step) || 1;
+  newValue = Math.round(newValue / step) * step;
+
+  input.value = newValue;
+
+  // Trigger redraw/color update
+  input.dispatchEvent(new Event('input'));
+  input.dispatchEvent(new Event('change'));
+}
+</script>
+
+
+
+<script>
+function toggleStatusManual() {
+  const btn = document.getElementById("statusManual");
+  if (btn.dataset.value === "Not Done - Invalid") {
+    btn.dataset.value = "done";
+    btn.textContent = "Done - Valid";
+    btn.style.backgroundColor = "#444";
+    btn.style.color = "white";
+  } else {
+    btn.dataset.value = "Not Done - Invalid";
+    btn.textContent = "Not Done - Invalid";
+    btn.style.backgroundColor = ""; // revert to original
+    btn.style.color = "";           // revert to original
+  }
+}
+</script>
+
+
+<script>
+// Public holidays (Selangor + KL 2025–2026)
+const PUBLIC_HOLIDAYS = new Set([
+  "2025-01-01","2025-01-29","2025-01-30","2025-02-01","2025-02-03",
+  "2025-02-11","2025-03-18","2025-03-31","2025-04-01","2025-05-01",
+  "2025-05-12","2025-06-02","2025-06-07","2025-06-27","2025-08-31",
+  "2025-09-01","2025-09-05","2025-09-15","2025-09-16","2025-10-20",
+  "2025-12-11","2025-12-25","2026-01-01","2026-02-01","2026-02-02",
+  "2026-02-17","2026-02-18","2026-03-07","2026-03-21","2026-03-22",
+  "2026-03-23","2026-05-01","2026-05-27","2026-05-31","2026-06-01",
+  "2026-06-17","2026-08-25","2026-08-31","2026-09-16","2026-11-08",
+  "2026-11-09","2026-12-11","2026-12-25"
+]);
+
+const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+function getOrdinal(n) {
+  let s=["th","st","nd","rd"], v=n%100;
+  return n + (s[(v-20)%10]||s[v]||s[0]);
+}
+
+function addWorkingDays(date, days) {
+  let result = new Date(date);
+  while (days > 0) {
+    result.setDate(result.getDate() + 1);
+    let day = result.getDay();
+    let dateStr = result.toISOString().split('T')[0];
+    if (day !== 0 && day !== 6 && !PUBLIC_HOLIDAYS.has(dateStr)) {
+      days--;
+    }
+  }
+  return result;
+}
+
+function formatDateWithDay(d) {
+  const months = ["January","February","March","April","May","June",
+                  "July","August","September","October","November","December"];
+  return `${getOrdinal(d.getDate())} ${months[d.getMonth()]} ${DAYS[d.getDay()]}`;
+}
+
+function calculateWorkingDays() {
+  let today = new Date();
+  let threeDays = addWorkingDays(today, 3);
+  let sevenDays = addWorkingDays(today, 7+1);
+
+  // Express option: 3 working days → 2 working days
+  let expressThree = addWorkingDays(today, 2);
+
+  document.getElementById('dateOutput').innerHTML = `
+    Today is ${formatDateWithDay(today)} , 
+     Completion Estimated ${formatDateWithDay(sevenDays)}.
+  `;
+}
+
+// Auto-calculate on page load
+calculateWorkingDays();
+</script>
+
+
+
+<script>
+function formatRM(amount) {
+  return 'RM ' + Math.round(amount).toLocaleString();
+}
+
+function calculateStandardDiscount() {
+  let p1 = parseFloat(document.getElementById('priceInput').value) || 0;
+  let p2 = parseFloat(document.getElementById('input2').value) || 0;
+  let p3 = parseFloat(document.getElementById('input3').value) || 0;
+
+  let price = p1 + p2 + p3;
+
+  if (price <= 0) {
+    document.getElementById('output').innerHTML = '<em>Please enter price.</em>';
+    return;
+  }
+
+let discount = 0;
+if (price <= 249) discount = 0;
+else if (price <= 299) discount = 10;
+else if (price <= 699) discount = 15;
+else discount = 20;
+
+
+  let netPrice = price * (1 - discount / 100);
+
+document.getElementById('output').innerHTML = `
+  Original Price : ${formatRM(price)}<br>
+  Net Price : ${formatRM(netPrice)}<br>
+  ${discount > 0 ? `Description : ${discount}% off until March 2026!<br>` : ``}
+`;
+
+}
+
+function calculateNoExamDiscount() {
+  let p1 = parseFloat(document.getElementById('priceInput').value) || 0;
+  let p2 = parseFloat(document.getElementById('input2').value) || 0;
+  let p3 = parseFloat(document.getElementById('input3').value) || 0;
+
+  let price = p1 + p2 + p3;
+
+  if (price <= 0) {
+    document.getElementById('output').innerHTML = '<br><em>Please enter price.</em>';
+    return;
+  }
+
+  let discount = 30;
+  let netPrice = price * (1 - discount / 100);
+  if (netPrice < 200) netPrice = 200;
+
+  document.getElementById('output').innerHTML = `<br>
+    Original Price : ${formatRM(price)}<br>
+    No-Eye-Exam Net Price : ${formatRM(netPrice)}<br>
+  `;
+}
+
+function applyRCode() {
+  // Sum all 3 inputs
+  let p1 = parseFloat(document.getElementById('priceInput').value) || 0;
+  let p2 = parseFloat(document.getElementById('input2').value) || 0;
+  let p3 = parseFloat(document.getElementById('input3').value) || 0;
+  let price = p1 + p2 + p3;
+
+  if (price <= 0) {
+    document.getElementById('output').innerHTML = '<em>Please enter price.</em>';
+    return;
+  }
+
+  // Base discount logic
+  let discount = 0;
+  if (price <= 249) discount = 0;
+  else if (price <= 299) discount = 10;
+  else if (price <= 699) discount = 15;
+  else discount = 20;
+
+  // Extra 5% R-Code
+  discount += 5;
+
+  let netPrice = price * (1 - discount / 100);
+
+  document.getElementById('output').innerHTML = `
+    Original Price : ${formatRM(price)}<br>
+    Net Price : ${formatRM(netPrice)}<br>
+${discount > 0 ? `Description : ${discount}% off (<span style="color:red; font-weight:bold;">R-Code!</span>)<br>` : ``}
+  `;
+}
+
+</script>
+
+<script>
+const TOTAL_IMAGES = 8;
+const BASE_URL = "https://raw.githubusercontent.com/kiaraoptometrypx/super_rx/main/";
+
+(function preloadImages() {
+  for (let i = 1; i <= TOTAL_IMAGES; i++) {
+    const img = new Image();
+    img.src = BASE_URL + "mey" + i + ".jpg";
+  }
+})();
+
+function showImg(n){
+  const img = document.getElementById('meyImage');
+
+  img.style.opacity = 0;
+
+  setTimeout(() => {
+    img.src = BASE_URL + "mey" + n + ".jpg";
+    img.style.opacity = 1;
+  }, 150); // half of transition time
+}
+</script>
+
+
+
+
+
+<script>
+function screener() {
+  const el = document.getElementById("screenerPanel");
+  el.style.display = (el.style.display === "none" || el.style.display === "")
+    ? "block"
+    : "none";
+}
+
+function copyText() {
+  const text = document.getElementById("screenerText").innerText;
+  navigator.clipboard.writeText(text);
+  document.getElementById("copyBtn").innerText = "Copied";
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+let activeBtn = { sph: null, cyl: null };
+
+// Your original setRx function
+function setRx(field, value){
+  const el = document.getElementById(field);
+  el.value = Number(value).toFixed(2);
+
+  // force same behavior as clicking +/- buttons
+  el.dispatchEvent(new Event('input', { bubbles:true }));
+  el.dispatchEvent(new Event('change', { bubbles:true }));
+
+  if (typeof updateAll === 'function') updateAll();
+  if (typeof redraw === 'function') redraw();
+}
+
+// New wrapper for highlighting + calling setRx
+function highlightRx(btn, field, value){
+  if(activeBtn[field]) activeBtn[field].classList.remove('rx-active');
+  btn.classList.add('rx-active');
+  activeBtn[field] = btn;
+
+  setRx(field, value);
+}
+
+// Reset everything
+function resetRx(){
+  if(activeBtn.sph) activeBtn.sph.classList.remove('rx-active');
+  if(activeBtn.cyl) activeBtn.cyl.classList.remove('rx-active');
+  activeBtn.sph = null;
+  activeBtn.cyl = null;
+
+  setRx('sph', 0.00);
+  setRx('cyl', 0.00);
+  setRx('axis', 180);
+}
+</script>
 
 
 
