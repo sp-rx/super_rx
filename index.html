@@ -65,6 +65,12 @@ th.yellow, tr.yellow, td.yellow, button.yellow {
   background: #d8c7c5;
   color: black;
 }
+
+th.purp, tr.purp, td.purp, button.purp {
+  background: #EEDCF5;
+  color: black;
+}
+
 th.blue, tr.blue, td.blue, button.blue{
   background: #d1dfe4;
   color: black;
@@ -403,23 +409,33 @@ button.active {
 <body>
 
 
+
+
+
+
+
+
+
+
+
+
 <div id="topBlock">
- <h2> Ready?</h2>
+ <h2>Ready?</h2>
 <nav class="topMenu" style="user-select:none;">
   <!-- First row -->
   <div style="display:flex; gap:10px; justify-content:flex-start; margin-bottom:5px;">
     <a data-target="s-1">Intro</a>
     <a data-target="s0">Current Rx</a>
-    <a data-target="s-2">Bino Test</a>
     <a data-target="s2">Vector RX</a>
-    <a data-target="s3">Manual RX</a>
+    <a style="opacity:0.1;" data-target="s-2">Bino Test</a>
+    <a style="opacity:0.1;" data-target="s3">Manual RX</a>
   </div>
 
   <!-- Second row -->
   <div style="display:flex; gap:10px; justify-content:flex-start;">
     <a data-target="s4">Summary</a>
-    <a data-target="s1">Analysis</a>
-    <a data-target="s6">How Eyes Work</a>
+    <a style="opacity:0.1;" data-target="s1">Analysis</a>
+    <a style="opacity:0.1;" data-target="s6">How Eyes Work</a>
   </div>
 </nav>
 </div>
@@ -847,7 +863,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+2.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="2.00" style="padding:4px;">
+    <select id="dc_200_ou" class="vectorhelper_duo" data-rx="2.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -858,7 +874,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="1.50" style="padding:4px;">
+    <select  id="dc_150_ou" class="vectorhelper_duo" data-rx="1.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -869,7 +885,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="1.00" style="padding:4px;">
+    <select  id="dc_100_ou" class="vectorhelper_duo" data-rx="1.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -880,7 +896,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+0.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="0.50" style="padding:4px;">
+    <select  id="dc_050_ou" class="vectorhelper_duo" data-rx="0.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -890,7 +906,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>NOW</span>
-    <select class="vectorhelper_duo" data-rx="0.00" style="padding:4px;">
+    <select  id="dc_00_ou" class="vectorhelper_duo" data-rx="0.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -900,7 +916,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-0.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-0.50" style="padding:4px;">
+    <select  id="dc_-050_ou" class="vectorhelper_duo" data-rx="-0.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -911,7 +927,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-1.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-1.00" style="padding:4px;">
+    <select  id="dc_-100_ou" class="vectorhelper_duo" data-rx="-1.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -921,7 +937,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-1.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-1.50" style="padding:4px;">
+    <select id="dc_-150_ou"  class="vectorhelper_duo" data-rx="-1.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -931,7 +947,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-2.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-2.00" style="padding:4px;">
+    <select id="dc_-200_ou" class="vectorhelper_duo" data-rx="-2.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -953,7 +969,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +0.00 FC -->
   <div id="fc-block-ou" class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>NOW + FOG</span>
-    <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
+    <select id="fc_000_ou" class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -975,7 +991,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +0.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+0.50 CYL + FOG</span>
-    <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
+    <select  id="fc_050_ou" class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -996,7 +1012,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +1.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.00 CYL + FOG</span>
-    <select class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
+    <select id="fc_100_ou"  class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1017,7 +1033,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +1.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.50 CYL + FOG</span>
-    <select class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
+    <select  id="fc_150_ou" class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1038,7 +1054,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +2.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+2.00 CYL + FOG</span>
-    <select class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
+    <select  id="fc_200_ou" class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1088,14 +1104,14 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 </th></tr>
 
 
-<tr class="re-row" data-eye="right" style="display:none; border-bottom:none">
+<tr class="re-row purp" data-eye="right" style="display:none; border-bottom:none">
 <td style="border-bottom:none"colspan="4">
 
 <div class="vectorhelper-row" style="display:grid;grid-template-columns:repeat(9,1fr);gap:5px;width:100%;">
 
 <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+2.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="2.00" style="padding:4px;">
+    <select id="dc_200_od" class="vectorhelper_duo" data-rx="2.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -1106,7 +1122,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="1.50" style="padding:4px;">
+    <select id="dc_150_od" class="vectorhelper_duo" data-rx="1.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -1118,7 +1134,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="1.00" style="padding:4px;">
+    <select id="dc_100_od" class="vectorhelper_duo" data-rx="1.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -1129,7 +1145,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+0.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="0.50" style="padding:4px;">
+    <select id="dc_050_od" class="vectorhelper_duo" data-rx="0.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1139,7 +1155,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>NOW</span>
-    <select class="vectorhelper_duo" data-rx="0.00" style="padding:4px;">
+    <select id="dc_000_od" class="vectorhelper_duo" data-rx="0.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1149,7 +1165,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-0.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-0.50" style="padding:4px;">
+    <select id="dc_-050_od" class="vectorhelper_duo" data-rx="-0.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1160,7 +1176,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-1.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-1.00" style="padding:4px;">
+    <select id="dc_-100_od" class="vectorhelper_duo" data-rx="-1.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1170,7 +1186,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-1.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-1.50" style="padding:4px;">
+    <select  id="dc_-150_od" class="vectorhelper_duo" data-rx="-1.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1180,7 +1196,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-2.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-2.00" style="padding:4px;">
+    <select id="dc_-200_od"  class="vectorhelper_duo" data-rx="-2.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1196,8 +1212,8 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
 
 
-<tr style="border-top:1px dotted lightgrey">
-<td class="re-row" style="display:none; border-top:none"colspan="4">
+<tr class="re-row purp" style="display:none; border-top:1px dotted lightgrey">
+<td style="border-top:none" colspan="4">
 <span id="foggingRight"></span><span id="perpendicular-axis-re"></span><br><br>
 
 <div class="fc-row" style="display:grid;grid-template-columns:repeat(5,1fr);gap:5%;width:100%;">
@@ -1205,7 +1221,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +0.00 FC -->
   <div id="fc-block-re" class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>NOW + FOG</span>
-    <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
+    <select id="fc_000_od" class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1226,7 +1242,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +0.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+0.50 CYL + FOG</span>
-    <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
+    <select id="fc_050_od"  class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1247,7 +1263,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +1.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.00 CYL + FOG</span>
-    <select class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
+    <select id="fc_100_od"  class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1268,7 +1284,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +1.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.50 CYL + FOG</span>
-    <select class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
+    <select id="fc_150_od"  class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1289,7 +1305,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +2.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+2.00 CYL + FOG</span>
-    <select class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
+    <select id="fc_200_od"  class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1311,13 +1327,13 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
 </div>
 
-<tr class="re-row" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceRight"></span>FC CYL: <span id="balance-re"></span>
+<tr class="re-row purp" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceRight"></span>FC CYL: <span id="balance-re"></span>
 
 </td></tr>
 
 </td></tr>
 
-<tr class="re-row" style="display:none">
+<tr class="re-row purp" style="display:none">
   <td>FC DC Bal R<br><div style="margin-top:5px"><button onclick="copyVD_OD()" style="border-radius:10px; width:70px; height:25px">Use RE</button></div></td>
   <td>
      Sph : <input type="number" step="0.25" id="vd_odS"><br>
@@ -1336,13 +1352,13 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
 <tr><th colspan="4">FC DC Status Left Eye <button class="vtbn" onclick="toggleLE()"> Show / Hide </button>
 </th></tr>
-<tr class="le-row" data-eye="left" style="display:none; border-bottom:none">
+<tr class="le-row purp" data-eye="left" style="display:none; border-bottom:none">
 <td style="border-bottom:none"colspan="4">
 <div class="vectorhelper-row" style="display:grid;grid-template-columns:repeat(9,1fr);gap:5px;width:100%;">
 
 <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+2.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="2.00" style="padding:4px;">
+    <select  id="dc_200_os" class="vectorhelper_duo" data-rx="2.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -1353,7 +1369,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="1.50" style="padding:4px;">
+    <select  id="dc_150_os" class="vectorhelper_duo" data-rx="1.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -1365,7 +1381,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="1.00" style="padding:4px;">
+    <select  id="dc_100_os" class="vectorhelper_duo" data-rx="1.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
 
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
@@ -1376,7 +1392,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+0.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="0.50" style="padding:4px;">
+    <select  id="dc_050_os"class="vectorhelper_duo" data-rx="0.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1386,7 +1402,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>NOW</span>
-    <select class="vectorhelper_duo" data-rx="0.00" style="padding:4px;">
+    <select id="dc_000_os" class="vectorhelper_duo" data-rx="0.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1396,7 +1412,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-0.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-0.50" style="padding:4px;">
+    <select id="dc_-050_os" class="vectorhelper_duo" data-rx="-0.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1407,7 +1423,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-1.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-1.00" style="padding:4px;">
+    <select id="dc_-100_os" class="vectorhelper_duo" data-rx="-1.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1417,7 +1433,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-1.50 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-1.50" style="padding:4px;">
+    <select id="dc_-150_os" class="vectorhelper_duo" data-rx="-1.50" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1427,7 +1443,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
   <div class="vectorhelper-rx" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>-2.00 SPH</span>
-    <select class="vectorhelper_duo" data-rx="-2.00" style="padding:4px;">
+    <select id="dc_-200_os" class="vectorhelper_duo" data-rx="-2.00" style="padding:4px;">
       <option value="na"   style="background:#f0f0f0;color:#555;font-style:italic;">N/A</option>
       <option value="blue" style="background:#1e90ff;color:#fff;">Blue</option>
       <option value="bal"  style="background:#888;color:#fff;">Bal</option>
@@ -1439,8 +1455,8 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 </div>
 </td></tr>
 
-<tr>
-<td class="le-row" style="display:none; border-top:none;"colspan="4">
+<tr class="le-row purp" style="display:none;" >
+<td style="border-top:none;" colspan="4">
 <span id="foggingLeft"></span><span id="perpendicular-axis-le"></span><br><br>
 
 
@@ -1449,7 +1465,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +0.00 FC -->
   <div id="fc-block-le" class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>NOW + FOG</span>
-    <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
+    <select id="fc_000_os"  class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1470,7 +1486,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +0.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+0.50 CYL + FOG</span>
-    <select class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
+    <select id="fc_050_os"  class="fc_duo" data-rx="0.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1491,7 +1507,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +1.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.00 CYL + FOG</span>
-    <select class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
+    <select id="fc_100_os"  class="fc_duo" data-rx="1.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1512,7 +1528,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +1.50 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+1.50 CYL + FOG</span>
-    <select class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
+    <select id="fc_150_os"  class="fc_duo" data-rx="1.50" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1533,7 +1549,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
   <!-- +2.00 FC -->
   <div class="fc-block" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
     <span>+2.00 CYL + FOG</span>
-    <select class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
+    <select id="fc_200_os"  class="fc_duo" data-rx="2.00" style="padding:4px; width:100%;">
   <option value="n/a">N/A</option>
   <option value="bal">Bal</option>
   <option value="180">3-9 (180)</option>
@@ -1553,12 +1569,12 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
 </div>
 
-<tr class="le-row" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceLeft"></span> FC CYL: <span id="balance-le"></span><br>
+<tr class="le-row purp" style="display:none; border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="4">DC SPH: <span style="margin-right:30px" id="balanceLeft"></span> FC CYL: <span id="balance-le"></span><br>
 </td></tr>
 
 
 </td></tr>
-<tr class="le-row" style="display:none">
+<tr class="le-row purp" style="display:none">
   <td>FC DC Bal L<br>
     <div style="margin-top:5px">
       <button onclick="copyVD_OS()" style="border-radius:10px; width:70px; height:25px">Use LE</button>
@@ -1647,8 +1663,13 @@ L: <span id="os_vcFinalS">0.00</span> / <span id="os_vcFinalC">0.00</span> x <sp
 </td>
 
 </tr>
+<tr><td colspan="4">Visualizer
+<button class="vtbn" onclick="togglevisualizer()">Show / Hide</button>
+</td></tr>
 
-<tr><td colspan="4">
+<tr class="vi-row" style="display:none;"><td colspan="4">
+
+
 
 <div class="controls">
 <div style="margin-top:10px; display:flex; gap:7%; align-items:flex-start; justify-content:center">
@@ -3258,6 +3279,18 @@ function exportInputs() {
     out.push(`${el.id}=${text}`);
   });
 
+// All FC (Cylinder) selects
+document.querySelectorAll("select.fc_duo").forEach(el => {
+  const text = el.options[el.selectedIndex]?.text || "";
+  out.push(`${el.id}=${text}`);
+});
+
+// All DC (Fog/Balance) selects
+document.querySelectorAll("select.vectorhelper_duo").forEach(el => {
+  const text = el.options[el.selectedIndex]?.text || "";
+  out.push(`${el.id}=${text}`);
+});
+
   // Prepare CSV text for export box
   const csvText = out.join(", ");
   document.getElementById("rxExportBox").value = csvText;
@@ -3362,9 +3395,25 @@ document.addEventListener("paste", e => {
     const id = part.slice(0, eq).trim();
     const val = part.slice(eq + 1).trim();
 
-    const el = document.getElementById(id);
+    // Try normal element by ID
+    let el = document.getElementById(id);
+
+    // If not found, check for FC/DC selects
+    if (!el) {
+      if (id.startsWith("FC ")) {
+        const rx = id.slice(3);
+        el = Array.from(document.querySelectorAll("select.fc_duo"))
+                  .find(s => s.dataset.rx === rx);
+      } else if (id.startsWith("DC ")) {
+        const rx = id.slice(3);
+        el = Array.from(document.querySelectorAll("select.dc_duo"))
+                  .find(s => s.dataset.rx === rx);
+      }
+    }
+
     if (!el) return;
 
+    // Set value
     if (el.tagName === "INPUT") {
       if (el.type === "number") {
         el.value = parseFloat(val) || "";
@@ -3372,15 +3421,17 @@ document.addEventListener("paste", e => {
         el.value = val;
       }
     } else if (el.tagName === "SELECT") {
-      // works for BT_select_xx and normal selects
       const option = Array.from(el.options).find(o => o.text === val);
       if (option) el.value = option.value;
     }
 
+    // Trigger change/input events
     el.dispatchEvent(new Event('input', { bubbles: true }));
     el.dispatchEvent(new Event('change', { bubbles: true }));
   });
 });
+
+
 </script>
 
 
@@ -5623,7 +5674,11 @@ function toggleLE(){
   });
 }
 
-
+function togglevisualizer(){
+  document.querySelectorAll(".vi-row").forEach(r=>{
+    r.style.display = r.style.display === "none" ? "" : "none";
+  });
+}
 
 </script>
 
@@ -6726,6 +6781,7 @@ function resetRx(){
   setRx('axis', 180);
 }
 </script>
+
 
 
 
