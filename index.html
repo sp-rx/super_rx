@@ -3526,166 +3526,11 @@ document.getElementById("fillCurrentBtn").addEventListener("click", () => {
 
 
 <script>
-// Export inputs as CSV and open Gmail
-function exportInputs() {
-  const out = ["RX_EXPORT_INPUTS"];
-  const omitIds = ["user", "pass"];
+// ===== CORE PARSER (USED EVERYWHERE) =====
+function applyCSV(csvText) {
+  if (!csvText.startsWith("RX_EXPORT_INPUTS")) return;
 
-
-  // Export all input fields by id
-document.querySelectorAll("input[id]").forEach(el => {
-  if (!omitIds.includes(el.id)) {
-    out.push(`${el.id}=${el.value}`);
-  }
-});
-
-  // Export statuses (buttons or selects)
-  ["statusVector", "statusManual"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      const value = el.tagName === "SELECT" 
-                    ? el.options[el.selectedIndex].text 
-                    : el.dataset.value; // button
-      out.push(`${id}=${value}`);
-    }
-  });
-
-  // Export specific text elements
-  ["od_vcFinalS","od_vcFinalC","od_vcFinalA","os_vcFinalS","os_vcFinalC","os_vcFinalA"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) out.push(`${id}=${el.textContent}`);
-  });
-
-  // Export all BT selects (Binocular Test)
-  document.querySelectorAll("select[id^='BT_select_']").forEach(el => {
-    const text = el.options[el.selectedIndex]?.text || "";
-    out.push(`${el.id}=${text}`);
-  });
-
-// All FC (Cylinder) selects
-document.querySelectorAll("select.fc_duo").forEach(el => {
-  const text = el.options[el.selectedIndex]?.text || "";
-  out.push(`${el.id}=${text}`);
-});
-
-// All DC (Fog/Balance) selects
-document.querySelectorAll("select.vectorhelper_duo").forEach(el => {
-  const text = el.options[el.selectedIndex]?.text || "";
-  out.push(`${el.id}=${text}`);
-});
-
-  // Prepare CSV text for export box
-  const csvText = out.join(", ");
-  document.getElementById("rxExportBox").value = csvText;
-
-  const separator = " ";
-
-  // Summary text (unchanged from your original)
-  const summaryText = 
-`To use this data, copy everything above this paste into any input in the app.
-
---------------------------
-
-CURRENT:
-1. Far RX R/L:     ${document.getElementById("od_origCombined")?.textContent || "-"}     //     ${document.getElementById("os_origCombined")?.textContent || "-"}
-2. ADD:     ${document.getElementById("nearAdd")?.value || "0.00"} 
-3. Near RX R/L:     ${document.getElementById("od_nearCombined")?.textContent || "-"}     //     ${document.getElementById("os_nearCombined")?.textContent || "-"}
-
-4. PD R/L:     ${document.getElementById("od_PD")?.value || "-"} / ${document.getElementById("os_PD")?.value || "-"}
-5. NOC R/L:     ${document.getElementById("od_NOC")?.value || "-"} / ${document.getElementById("os_NOC")?.value || "-"}
-
-6. Current Comments : ${document.getElementById("current_comments_summary")?.textContent || "-" }
-
---------------------------
-
-VECTOR (${
-  (function(el){
-    if(!el) return "-";
-    return el.tagName === "SELECT"
-      ? el.options[el.selectedIndex]?.text || "-"
-      : el.dataset.value || "-";
-  })(document.getElementById("statusVector"))
-})
-1. Far RX R/L:     ${document.getElementById("od_vcCombined")?.textContent || "-"}     //     ${document.getElementById("os_vcCombined")?.textContent || "-"}
-2. ADD:     ${document.getElementById("nearAddVector")?.value || "0.00"}  
-3. Near RX R/L:     ${document.getElementById("od_vcNearCombined_mirror")?.textContent || "-"}     //     ${document.getElementById("os_vcNearCombined_mirror")?.textContent || "-"}
-
-4. Far Contact Lens RX R/L:     ${document.getElementById("CL_od_vcCombined")?.textContent || "-"}     //     ${document.getElementById("CL_os_vcCombined")?.textContent || "-"}
-
-5. PD R/L:     ${document.getElementById("od_PD")?.value || "-"} / ${document.getElementById("os_PD")?.value || "-"}
-6. NOC R/L:     ${document.getElementById("od_NOC")?.value || "-"} / ${document.getElementById("os_NOC")?.value || "-"}
- 
-7. FC DC Bal Both Eye:     ${document.getElementById("vd_ouSummary")?.textContent || "-"}  
-8. FC DC BAL RE/LE:     ${document.getElementById("vd_odSummary")?.textContent || "-"}     //     ${document.getElementById("vd_osSummary")?.textContent || "-"}  
-9. RX Changes R/L:          ${document.getElementById("vc_odSummary")?.textContent || "-"}     //     ${document.getElementById("vc_osSummary")?.textContent || "-"}
-
-10. Vector Comments : ${document.getElementById("vector_comments_summary")?.textContent || "-" }
-
---------------------------
-
-MANUAL (${
-  (function(el){
-    if(!el) return "-";
-    return el.tagName === "SELECT"
-      ? el.options[el.selectedIndex]?.text || "-"
-      : el.dataset.value || "-";
-  })(document.getElementById("statusManual"))
-})
-1. Far RX R/L:     ${document.getElementById("od_finalCombined")?.textContent || "-"}     //     ${document.getElementById("os_finalCombined")?.textContent || "-"}
-2. ADD:     ${document.getElementById("nearAddFinal")?.value || "0.00"}
-3. Near RX R/L:     ${document.getElementById("od_finalNearCombined_mirror")?.textContent || "-"}     //     ${document.getElementById("os_finalNearCombined_mirror")?.textContent || "-"}
-
-4. PD R/L:     ${document.getElementById("od_PD")?.value || "-"} / ${document.getElementById("os_PD")?.value || "-"}
-5. NOC R/L:     ${document.getElementById("od_NOC")?.value || "-"} / ${document.getElementById("os_NOC")?.value || "-"}
-
-6. RX Changes R/L:     ${document.getElementById("od_roundCombinedDisplay")?.textContent || "-"}     //     ${document.getElementById("os_roundCombinedDisplay")?.textContent || "-"}
-
-7. Manual : ${document.getElementById("manual_comments_summary")?.textContent || "-" }
-
-- The end -
-`;
-
-  const emailBody = csvText + "\n\n" + separator + "\n\n" + summaryText;
-
-  const customerNameInput = document.getElementById("customerName");
-  const whatsappNumberInput = document.getElementById("customerWhatsapp");
-  const customerName = customerNameInput?.value.trim() || "Unnamed";
-  const whatsappNumber = whatsappNumberInput?.value.trim() || "";
-
-  const recipient = "kiara.optometry.px@gmail.com";
-  const subject = encodeURIComponent(`${customerName}${whatsappNumber ? " - " + whatsappNumber : ""}`);
-  const body = encodeURIComponent(emailBody);
-
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${subject}&body=${body}`;
-  window.open(gmailUrl, "_blank");
-}
-
-// Attach export function to all buttons with class "exportBtn"
-document.querySelectorAll(".exportBtn").forEach(btn => {
-  btn.addEventListener("click", exportInputs);
-});
-
-window.addEventListener("load", () => {
-  const params = new URLSearchParams(window.location.search);
-
-  params.forEach((value, key) => {
-    const el = document.getElementById(key);
-    if (el) {
-      el.value = value;
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-  });
-});
-
-	
-// Paste listener to restore inputs from CSV
-document.addEventListener("paste", e => {
-  const text = e.clipboardData.getData("text").trim();
-  if (!text.startsWith("RX_EXPORT_INPUTS")) return;
-
-  e.preventDefault();
-  const parts = text.split(",").slice(1);
+  const parts = csvText.split(", ").slice(1);
 
   parts.forEach(part => {
     const eq = part.indexOf("=");
@@ -3694,43 +3539,118 @@ document.addEventListener("paste", e => {
     const id = part.slice(0, eq).trim();
     const val = part.slice(eq + 1).trim();
 
-    // Try normal element by ID
     let el = document.getElementById(id);
 
-    // If not found, check for FC/DC selects
+    // FC/DC fallback
     if (!el) {
       if (id.startsWith("FC ")) {
         const rx = id.slice(3);
         el = Array.from(document.querySelectorAll("select.fc_duo"))
-                  .find(s => s.dataset.rx === rx);
+          .find(s => s.dataset.rx === rx);
       } else if (id.startsWith("DC ")) {
         const rx = id.slice(3);
         el = Array.from(document.querySelectorAll("select.dc_duo"))
-                  .find(s => s.dataset.rx === rx);
+          .find(s => s.dataset.rx === rx);
       }
     }
 
     if (!el) return;
 
-    // Set value
     if (el.tagName === "INPUT") {
-      if (el.type === "number") {
-        el.value = parseFloat(val) || "";
-      } else {
-        el.value = val;
-      }
+      el.value = el.type === "number" ? parseFloat(val) || "" : val;
     } else if (el.tagName === "SELECT") {
       const option = Array.from(el.options).find(o => o.text === val);
       if (option) el.value = option.value;
     }
 
-    // Trigger change/input events
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-    el.dispatchEvent(new Event('change', { bubbles: true }));
+    el.dispatchEvent(new Event("input",{bubbles:true}));
+    el.dispatchEvent(new Event("change",{bubbles:true}));
   });
+}
+
+// ===== EXPORT FUNCTION =====
+function exportInputs() {
+  const out = ["RX_EXPORT_INPUTS"];
+  const omitIds = ["user","pass"];
+
+  document.querySelectorAll("input[id]").forEach(el => {
+    if (!omitIds.includes(el.id)) out.push(`${el.id}=${el.value}`);
+  });
+
+  ["statusVector","statusManual"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const val = el.tagName==="SELECT"
+        ? el.options[el.selectedIndex].text
+        : el.dataset.value;
+      out.push(`${id}=${val}`);
+    }
+  });
+
+  ["od_vcFinalS","od_vcFinalC","od_vcFinalA","os_vcFinalS","os_vcFinalC","os_vcFinalA"]
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) out.push(`${id}=${el.textContent}`);
+    });
+
+  document.querySelectorAll("select[id^='BT_select_'], select.fc_duo, select.vectorhelper_duo")
+    .forEach(el => {
+      const val = el.options[el.selectedIndex]?.text || "";
+      out.push(`${el.id}=${val}`);
+    });
+
+  const csvText = out.join(", ");
+  document.getElementById("rxExportBox").value = csvText;
+
+  // ✅ Prefill URL (core feature)
+  const prefillUrl = `https://sp-rx.github.io/super_rx/?data=${encodeURIComponent(csvText)}`;
+
+  // ✅ SHORT Gmail body (prevents crash)
+  const customerName = document.getElementById("customerName")?.value.trim() || "Unnamed";
+  const whatsappNumber = document.getElementById("customerWhatsapp")?.value.trim() || "";
+
+  const subject = encodeURIComponent(`${customerName}${whatsappNumber ? " - " + whatsappNumber : ""}`);
+  const body = encodeURIComponent(`Click to open & prefill:\n${prefillUrl}`);
+
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=kiara.optometry.px@gmail.com&su=${subject}&body=${body}`;
+  window.open(gmailUrl, "_blank");
+}
+
+// Attach export
+document.querySelectorAll(".exportBtn").forEach(btn => {
+  btn.addEventListener("click", exportInputs);
 });
 
+// ===== PREFILL FROM URL =====
+window.addEventListener("load", () => {
+  const params = new URLSearchParams(window.location.search);
 
+  // Simple mode (testing)
+  params.forEach((value, key) => {
+    if (key === "data") return;
+    const el = document.getElementById(key);
+    if (el) {
+      el.value = value;
+      el.dispatchEvent(new Event("input",{bubbles:true}));
+      el.dispatchEvent(new Event("change",{bubbles:true}));
+    }
+  });
+
+  // CSV mode (real system)
+  const csvData = params.get("data");
+  if (csvData) {
+    applyCSV(decodeURIComponent(csvData));
+  }
+});
+
+// ===== PASTE SUPPORT (optional but useful) =====
+document.addEventListener("paste", e => {
+  const text = e.clipboardData.getData("text").trim();
+  if (!text.startsWith("RX_EXPORT_INPUTS")) return;
+
+  e.preventDefault();
+  applyCSV(text);
+});
 </script>
 
 
