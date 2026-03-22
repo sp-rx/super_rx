@@ -3665,6 +3665,20 @@ document.querySelectorAll(".exportBtn").forEach(btn => {
   btn.addEventListener("click", exportInputs);
 });
 
+window.addEventListener("load", () => {
+  const params = new URLSearchParams(window.location.search);
+
+  params.forEach((value, key) => {
+    const el = document.getElementById(key);
+    if (el) {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  });
+});
+
+	
 // Paste listener to restore inputs from CSV
 document.addEventListener("paste", e => {
   const text = e.clipboardData.getData("text").trim();
