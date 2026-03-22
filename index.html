@@ -3526,11 +3526,24 @@ document.getElementById("fillCurrentBtn").addEventListener("click", () => {
 
 
 <script>
-// ===== CORE PARSER (USED EVERYWHERE) =====
+// ===== FILTER =====
+function shouldInclude(val) {
+  if (!val) return false;
+  const v = val.toString().trim();
+  return !(
+    v === "" ||
+    v === "0" ||
+    v === "0.00" ||
+    v === "--Select--" ||
+    v === "N/A"
+  );
+}
+
+// ===== CORE PARSER =====
 function applyCSV(csvText) {
   if (!csvText.startsWith("RX_EXPORT_INPUTS")) return;
 
-  const parts = csvText.split(", ").slice(1);
+  const parts = csvText.split(",").slice(1);
 
   parts.forEach(part => {
     const eq = part.indexOf("=");
@@ -3568,44 +3581,63 @@ function applyCSV(csvText) {
   });
 }
 
-// ===== EXPORT FUNCTION =====
+// ===== EXPORT =====
 function exportInputs() {
   const out = ["RX_EXPORT_INPUTS"];
   const omitIds = ["user","pass"];
 
+  // INPUTS
   document.querySelectorAll("input[id]").forEach(el => {
-    if (!omitIds.includes(el.id)) out.push(`${el.id}=${el.value}`);
+    if (omitIds.includes(el.id)) return;
+    const val = el.value;
+    if (shouldInclude(val)) {
+      out.push(`${el.id}=${val}`);
+    }
   });
 
+  // STATUS
   ["statusVector","statusManual"].forEach(id => {
     const el = document.getElementById(id);
-    if (el) {
-      const val = el.tagName==="SELECT"
-        ? el.options[el.selectedIndex].text
-        : el.dataset.value;
+    if (!el) return;
+
+    const val = el.tagName==="SELECT"
+      ? el.options[el.selectedIndex]?.text
+      : el.dataset.value;
+
+    if (shouldInclude(val)) {
       out.push(`${id}=${val}`);
     }
   });
 
+  // TEXT OUTPUTS
   ["od_vcFinalS","od_vcFinalC","od_vcFinalA","os_vcFinalS","os_vcFinalC","os_vcFinalA"]
     .forEach(id => {
       const el = document.getElementById(id);
-      if (el) out.push(`${id}=${el.textContent}`);
+      if (!el) return;
+
+      const val = el.textContent;
+      if (shouldInclude(val)) {
+        out.push(`${id}=${val}`);
+      }
     });
 
+  // SELECTS (BT + FC + DC)
   document.querySelectorAll("select[id^='BT_select_'], select.fc_duo, select.vectorhelper_duo")
     .forEach(el => {
       const val = el.options[el.selectedIndex]?.text || "";
-      out.push(`${el.id}=${val}`);
+      if (shouldInclude(val)) {
+        out.push(`${el.id}=${val}`);
+      }
     });
 
-  const csvText = out.join(", ");
+  // FINAL CSV (no spaces)
+  const csvText = out.join(",");
   document.getElementById("rxExportBox").value = csvText;
 
-  // ✅ Prefill URL (core feature)
+  // PREFILL URL
   const prefillUrl = `https://sp-rx.github.io/super_rx/?data=${encodeURIComponent(csvText)}`;
 
-  // ✅ SHORT Gmail body (prevents crash)
+  // EMAIL
   const customerName = document.getElementById("customerName")?.value.trim() || "Unnamed";
   const whatsappNumber = document.getElementById("customerWhatsapp")?.value.trim() || "";
 
@@ -3616,16 +3648,16 @@ function exportInputs() {
   window.open(gmailUrl, "_blank");
 }
 
-// Attach export
+// ATTACH
 document.querySelectorAll(".exportBtn").forEach(btn => {
   btn.addEventListener("click", exportInputs);
 });
 
-// ===== PREFILL FROM URL =====
+// ===== PREFILL =====
 window.addEventListener("load", () => {
   const params = new URLSearchParams(window.location.search);
 
-  // Simple mode (testing)
+  // simple key=value
   params.forEach((value, key) => {
     if (key === "data") return;
     const el = document.getElementById(key);
@@ -3636,14 +3668,14 @@ window.addEventListener("load", () => {
     }
   });
 
-  // CSV mode (real system)
+  // CSV mode
   const csvData = params.get("data");
   if (csvData) {
     applyCSV(decodeURIComponent(csvData));
   }
 });
 
-// ===== PASTE SUPPORT (optional but useful) =====
+// ===== PASTE =====
 document.addEventListener("paste", e => {
   const text = e.clipboardData.getData("text").trim();
   if (!text.startsWith("RX_EXPORT_INPUTS")) return;
