@@ -3185,9 +3185,9 @@ function updateDateTime() {
   const d = new Date();
 
   const datePart = d.toLocaleDateString("en-GB", {
-    weekday: "long",
+    weekday: "short",
     day: "2-digit",
-    month: "long",
+    month: "short",
     year: "numeric"
   });
 
