@@ -3175,12 +3175,14 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
 function updateDateTime() {
   const d = new Date();
 
-  const datePart = d.toLocaleDateString("en-GB", {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
+const weekday = d.toLocaleDateString("en-GB", { weekday: "short" });
+const rest = d.toLocaleDateString("en-GB", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric"
+});
+
+const datePart = `${weekday} ${rest}`;
 
   const timePart = d.toLocaleTimeString("en-GB", {
     hour: "2-digit",
