@@ -197,6 +197,9 @@ body, table, th, td, input, button {
   margin-top: 00px;
 }
 
+  .section { display: none; } /* hide all sections by default */
+  #s-1 { display: block; }    /* show only s-1 on page load */
+
 .updateAllBtn {
   cursor: pointer;
 }
@@ -2480,16 +2483,17 @@ NOC :
 </tr>
 </table>
 
+</div>
 
-    <div id="s5" class="Lenses">
+
+    <div id="s5" class="section">
 <div style="height:90px"></div>
 
 
 	<table>
 <tr><th colspan="4">Lenses</th></tr>
 
-
-<tr class="mask4"><td>New Lens Details<br><br> <button style="display:none" onclick="openSummary()">Open Lens Site</button>
+<tr style="display:none" class="mask4"><td>New Lens Details<br><br> <button style="display:none" onclick="openSummary()">Open Lens Site</button>
 </td>
 <td colspan="3">
 <div>
@@ -2510,8 +2514,7 @@ NOC :
 
 
 
-<tr><td colspan="4">
-
+<tr style="display:none"><td colspan="4">
 
 <span><b>Calculator</b></span>
 <input style="margin-left:5% ; margin-right:5%; width:25%" id="priceInput" type="number" placeholder="RM">
@@ -2525,7 +2528,10 @@ NOC :
 <div id="output" style="font-weight:bold; margin-top:2%"><i>Price : Awaiting..</i></div><br>
 
 <div id="dateOutput" style="font-weight:bold;"></div><br>
+</td></tr>
 
+
+<tr><td colspan="4">
 
 <div style="margin-top:20px; flex:1; overflow:hidden; text-align:left;">
 
@@ -5030,11 +5036,6 @@ document.querySelectorAll(".updateAllBtn").forEach(btn => {
 </script>
 
 
-
-<style>
-  .section { display: none; } /* hide all sections by default */
-  #s-1 { display: block; }    /* show only s-1 on page load */
-</style>
 
 <script>
 const content = document.getElementById("content");
