@@ -2528,13 +2528,6 @@ NOC :
     <button onclick="showImg(2)">Optimization - Compensated</button>
   </div>
 
-  <!-- SINGLE VISION -->
-  <div style="margin-bottom:8px;">
-    <span style="font-weight:bold; margin-right:6px;">Single Vision :</span>
-    <button onclick="showImg(5)">Frame Optimized</button>
-    <button onclick="showImg(8)">Normal</button>
-  </div>
-
   <!-- PROGRESSIVES -->
   <div style="margin-bottom:8px;">
     <span style="font-weight:bold; margin-right:6px;">Progressives :</span>
@@ -2542,6 +2535,8 @@ NOC :
     <button onclick="showImg(4)">Frame Semi-Optimized</button>
     <button onclick="showImg(6)">Enhanced Normal</button>
     <button onclick="showImg(7)">Normal</button>
+    <button onclick="showImg(8)">Basic</button>
+
   </div>
 
 </div>
@@ -7051,7 +7046,7 @@ ${discount > 0 ? `Description : ${discount}% off (<span style="color:red; font-w
 </script>
 
 <script>
-const TOTAL_IMAGES = 8;
+const TOTAL_IMAGES = 9;
 const BASE_URL = "https://raw.githubusercontent.com/sp-rx/super_rx/main/";
 
 (function preloadImages() {
@@ -7069,7 +7064,7 @@ function showImg(n){
   setTimeout(() => {
     img.src = BASE_URL + "mey" + n + ".jpg";
     img.style.opacity = 1;
-  }, 150); // half of transition time
+  }, 0); // half of transition time
 }
 </script>
 
