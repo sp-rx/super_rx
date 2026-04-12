@@ -109,8 +109,7 @@ th:nth-child(4) {
 
 
 .hidden-row {
-  opacity: 0.0;       /* semi-transparent */
-  pointer-events: none; /* optional: disable interactions */
+display:none;
 }
 
   body {
@@ -2625,7 +2624,22 @@ NOC :
 
 <table>
 
-<tr><th colspan="4">Analysis</th></tr>
+<tr><th colspan="4">RX Change & Bino Imbalance Analysis <button class="toggleMask3"
+  style="
+    border-radius:10px;
+    font-size: 8px;
+    margin-left:3%;
+    height:15px;
+    width:130px;
+    line-height:15px;
+    text-align:center;
+    padding:0;
+  ">
+  Hide/Show
+</button></th></tr>
+<tbody class="mask3 hidden-row">
+
+
 <tr style="border:none; height:10px;">
   <td style="border:none; height:1px; padding:0;"></td>
   <td style="border:none; height:1px; padding:0;"></td>
@@ -2633,7 +2647,7 @@ NOC :
   <td style="border:none; height:1px; padding:0;"></td>
 </tr>
 
-<tr><th colspan="4">RX Change & Bino Imbalance Analysis</th></tr>
+
 
 <tr class="mask2">
   <td class="yellow">FC DC Bal</td>
@@ -2690,7 +2704,6 @@ NOC :
 </th></tr>
 
 
-
 <tr class="mask2">
   <td class="yellow">SP Gaze</td>
   <td class="yellow" colspan="3">
@@ -2708,6 +2721,7 @@ NOC :
     Diagonal : <span id="prismD">-</span>
   </td>
 </tr>
+</tbody>
 
 <tr style="border:none; height:10px;">
   <td style="border:none; height:1px; padding:0;"></td>
@@ -2716,11 +2730,10 @@ NOC :
   <td style="border:none; height:1px; padding:0;"></td>
 </tr>
 
-<tr><th colspan="4">Blur Value <button class="toggleMask3" style="border-radius:10px; margin-left:3%; height:25px; width:130px">
-  Hide/Show
-</button></th></tr>
 
-<tr class="mask3 hidden-row">
+<tr><th colspan="4">Blur Value</th></tr>
+
+<tr>
 <td colspan="4">
 <div>
 Prescription comes in many types of errors; whether it's myopia, hyperopia or astigmatism.<br>The test works by measuring the blur, then correcting your vision with the amount.<br><br>
@@ -2774,7 +2787,7 @@ Prescription comes in many types of errors; whether it's myopia, hyperopia or as
   </div>
 
 <div style="
-  display:none;
+  display:grid;
   grid-template-columns: repeat(3, 25%);
   gap:10px;
   justify-content:center;
@@ -2783,7 +2796,7 @@ Prescription comes in many types of errors; whether it's myopia, hyperopia or as
 ">
   <button style="width:100%" onclick="highlightRx(this,'sph_test',-1.00)">Near-Sighted</button>
   <button style="width:100%" onclick="highlightRx(this,'sph_test',1.00)">Far-Sighted</button>
-  <button style="width:100%" onclick="highlightRx(this,'cyl_test',-1.00)">Astig</button>
+  <button style="width:100%" onclick="highlightRx(this,'cyl_test',-0.75)">Astig</button>
   <button style="width:100%" onclick="highlightRx(this,'sph_test',-2.00)">High Near-Sighted</button>
   <button style="width:100%" onclick="highlightRx(this,'sph_test',2.00)">High Far-Sighted</button>
   <button style="width:100%" onclick="highlightRx(this,'cyl_test',-2.00)">High Astig</button>
@@ -7148,10 +7161,12 @@ function highlightRx(btn, field, value){
 
 // Reset everything
 function resetRx(){
-  if(activeBtn.sph) activeBtn.sph.classList.remove('rx-active');
-  if(activeBtn.cyl) activeBtn.cyl.classList.remove('rx-active');
-  activeBtn.sph = null;
-  activeBtn.cyl = null;
+  Object.keys(activeBtn).forEach(field => {
+    if(activeBtn[field]){
+      activeBtn[field].classList.remove('rx-active');
+      activeBtn[field] = null;
+    }
+  });
 
   setRx('sph_test', 0.00);
   setRx('cyl_test', 0.00);
