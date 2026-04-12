@@ -2738,24 +2738,24 @@ Prescription comes in many types of errors; whether it's myopia, hyperopia or as
     <!-- SPH -->
     <div style="text-align:center;">
       <label><b>SPH</b></label><br>
-      <input type="number" id="sph" step="0.25" value="0.00" class="rx-input"><br>
+      <input type="number" id="sph_test" step="0.25" value="0.00" class="rx-input"><br>
       <div>
-        <button onclick="adj('sph',-0.25)" class="btn-minus">−0.25</button>
-        <button onclick="adj('sph', 0.25)" class="btn-plus">+0.25</button><br>
-        <button onclick="adj('sph',-0.50)" class="btn-minus">−0.50</button>
-        <button onclick="adj('sph', 0.50)" class="btn-plus">+0.50</button><br>
+        <button onclick="adj('sph_test',-0.25)" class="btn-minus">−0.25</button>
+        <button onclick="adj('sph_test', 0.25)" class="btn-plus">+0.25</button><br>
+        <button onclick="adj('sph_test',-0.50)" class="btn-minus">−0.50</button>
+        <button onclick="adj('sph_test', 0.50)" class="btn-plus">+0.50</button><br>
        </div>
     </div>
 
     <!-- CYL -->
     <div style="text-align:center;">
       <label><b>CYL</b></label><br>
-      <input type="number" id="cyl" step="0.25" value="0.00" class="rx-input"><br>
+      <input type="number" id="cyl_test" step="0.25" value="0.00" class="rx-input"><br>
       <div>
-        <button onclick="adj('cyl',-0.25)" class="btn-minus">−0.25</button>
-        <button onclick="adj('cyl', 0.25)" class="btn-plus">+0.25</button><br>
-        <button onclick="adj('cyl',-0.50)" class="btn-minus">−0.50</button>
-        <button onclick="adj('cyl', 0.50)" class="btn-plus">+0.50</button><br>
+        <button onclick="adj('cyl_test',-0.25)" class="btn-minus">−0.25</button>
+        <button onclick="adj('cyl_test', 0.25)" class="btn-plus">+0.25</button><br>
+        <button onclick="adj('cyl_test',-0.50)" class="btn-minus">−0.50</button>
+        <button onclick="adj('cyl_test', 0.50)" class="btn-plus">+0.50</button><br>
 
       </div>
     </div>
@@ -2763,29 +2763,30 @@ Prescription comes in many types of errors; whether it's myopia, hyperopia or as
     <!-- AXIS -->
     <div style="text-align:center;">
       <label><b>AXIS</b></label><br>
-      <input type="number" id="axis" min="0" step="15" value="0" class="rx-input"><br>
+      <input type="number" id="axis_test" min="0" step="15" value="0" class="rx-input"><br>
       <div>
-        <button onclick="adj('axis', -15)"  class="btn-minus">−15</button>
-        <button onclick="adj('axis',  15)"  class="btn-plus">+15</button><br>        
-	<button onclick="adj('axis', -30)"  class="btn-minus">−30</button>
-        <button onclick="adj('axis',  30)"  class="btn-plus">+30</button><br>
+        <button onclick="adj('axis_test', -15)"  class="btn-minus">−15</button>
+        <button onclick="adj('axis_test',  15)"  class="btn-plus">+15</button><br>        
+	<button onclick="adj('axis_test', -30)"  class="btn-minus">−30</button>
+        <button onclick="adj('axis_test',  30)"  class="btn-plus">+30</button><br>
       </div>
     </div>
   </div>
 
 <div style="
-  display:grid;
+  display:none;
   grid-template-columns: repeat(3, 25%);
   gap:10px;
   justify-content:center;
   margin-top:12px;
+ 
 ">
-  <button style="width:100%" onclick="highlightRx(this,'sph',-1.00)">Near-Sighted</button>
-  <button style="width:100%" onclick="highlightRx(this,'sph',1.00)">Far-Sighted</button>
-  <button style="width:100%" onclick="highlightRx(this,'cyl',-1.00)">Astig</button>
-  <button style="width:100%" onclick="highlightRx(this,'sph',-2.00)">High Near-Sighted</button>
-  <button style="width:100%" onclick="highlightRx(this,'sph',2.00)">High Far-Sighted</button>
-  <button style="width:100%" onclick="highlightRx(this,'cyl',-2.00)">High Astig</button>
+  <button style="width:100%" onclick="highlightRx(this,'sph_test',-1.00)">Near-Sighted</button>
+  <button style="width:100%" onclick="highlightRx(this,'sph_test',1.00)">Far-Sighted</button>
+  <button style="width:100%" onclick="highlightRx(this,'cyl_test',-1.00)">Astig</button>
+  <button style="width:100%" onclick="highlightRx(this,'sph_test',-2.00)">High Near-Sighted</button>
+  <button style="width:100%" onclick="highlightRx(this,'sph_test',2.00)">High Far-Sighted</button>
+  <button style="width:100%" onclick="highlightRx(this,'cyl_test',-2.00)">High Astig</button>
 </div>
 
 <style>
@@ -5364,6 +5365,17 @@ else {
   const OVERLAY_ALPHA = 0.5;
   const FC_BLUR_GAIN = 0.5;
 
+const FAN_IMAGES = {};
+const FAN_LIST = ["C000.png","C025.png","C050.png","C075.png","C100.png","C150.png"];
+
+function preloadFanImages(){
+  FAN_LIST.forEach(name => {
+    const img = new Image();
+    img.src = `https://raw.githubusercontent.com/sp-rx/Trainer/main/${name}`;
+    FAN_IMAGES[name] = img;
+  });
+}
+
   /* ========= ELEMENTS ========= */
   const redImg  = document.getElementById('redImg');
   const blueImg = document.getElementById('blueImg');
@@ -5372,9 +5384,9 @@ else {
   const fanImg  = document.getElementById('fanChart');
   const outer   = document.getElementById('outerCircle');
 
-  const sphInput  = document.getElementById('sph');
-  const cylInput  = document.getElementById('cyl');
-  const axisInput = document.getElementById('axis');
+  const sphInput  = document.getElementById('sph_test');
+  const cylInput  = document.getElementById('cyl_test');
+  const axisInput = document.getElementById('axis_test');
 
   /* ========= STATE ========= */
   let TRUE = { sph:0, cyl:0, axis:180, se:0 };
@@ -5445,15 +5457,17 @@ else {
 
     /* ---- FAN CHART ---- */
 const absC = Math.abs(cyl);
+
 let img;
 if(absC === 0)             img = "C000.png";
-else if(absC <= 0.25)      img = "C050.png";
-else if(absC <= 0.5)       img = "C075.png";
-else if(absC <= 0.75)      img = "C100.png";
+else if(absC <= 0.3)       img = "C025.png";
+else if(absC <= 0.5)       img = "C050.png";
+else if(absC <= 0.75)      img = "C075.png";
+else if(absC <= 1.00)      img = "C100.png";
 else                       img = "C150.png";
-fanImg.src = `https://raw.githubusercontent.com/sp-rx/Trainer/main/${img}`;
-
-
+if(FAN_IMAGES[img]){
+  fanImg.src = FAN_IMAGES[img].src;
+}
 
     const axisFC  = (axis + 90) % 180;
     const fcShift = (deltaSE > 0) ? 90 : 0;
@@ -5473,6 +5487,7 @@ fanImg.src = `https://raw.githubusercontent.com/sp-rx/Trainer/main/${img}`;
   });
 
   /* ========= INIT ========= */
+preloadFanImages();
   recompute();
 
 })();
@@ -7138,9 +7153,9 @@ function resetRx(){
   activeBtn.sph = null;
   activeBtn.cyl = null;
 
-  setRx('sph', 0.00);
-  setRx('cyl', 0.00);
-  setRx('axis', 180);
+  setRx('sph_test', 0.00);
+  setRx('cyl_test', 0.00);
+  setRx('axis_test', 180);
 }
 </script>
 
