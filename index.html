@@ -427,7 +427,7 @@ button.active {
   <!-- Second row -->
   <div style="display:flex; gap:10px; justify-content:flex-start;">
     <a data-target="s4">Summary</a>
-	<a data-target="s5">Lenses</a>
+	<a style="opacity:0.1;" data-target="s5">Lenses</a>
     <a style="opacity:0.1;" data-target="s1">Analysis</a>
     <a style="opacity:0.1;" data-target="s6">How Eyes Work</a>
   </div>
@@ -911,7 +911,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
 <tr><th class="yellow" colspan="4">FC DC Status Both Eye <button class="vtbn" onclick="toggleBE()">Show / Hide</button>
 </th></tr>
-<tr class="yellow be-row" data-eye="both" style="border-bottom:none">
+<tr class="yellow be-row" data-eye="both" style="display:none; border-bottom:none">
 <td style="border-bottom:none" colspan="4">
 
 <div class="SPhelper-row" style="display:grid;grid-template-columns:repeat(9,1fr);gap:5px;max-width:100%;">
@@ -1015,7 +1015,7 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 </td></tr>
 
 
-<tr class="yellow be-row" style="border-top:1px dotted lightgrey">
+<tr class="yellow be-row" style="display:none; border-top:1px dotted lightgrey">
 <td style="border-top:none"colspan="4">
 <span id="foggingBoth"></span><span id="perpendicular-axis-ou"></span><br><br>
 
@@ -1129,24 +1129,24 @@ RX Profile for <span class="customerName_summary">...</span> , Whatsapp <span cl
 
 </div>
 <br>
-<button style="margin:5px 0; border-radius:10px; width:100px; height:25px" id="fillBalance">FC DC RX</button>
+<button style="margin:5px 0; border-radius:10px; width:100px; height:25px" id="fillBalance">FC DC Bal Be</button>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button style="margin:5px 0; border-radius:10px; width:100px; height:25px"  onclick="toggleBEfinal()">Analysis</button>
+
 
 </td></tr>
 
-
-
-
-<tr class="befinal-row yellow" style="display:none; border-top:none; border-bottom:none"><td rowspan="2" style="border-top:none; border-bottom:none" colspan="1">FC DC Bal BE<br> 
-
-</td>
-<td style="border-top:none; border-bottom:none" colspan="3">
+<tr>
+<td class="be-row yellow" style="display:none; border-top:none; border-bottom:none" colspan="4">
 DC SPH: <span style="margin-right:30px" id="balanceBoth"></span>FC CYL: <span id="balance-ou"></span>
 
-</td></tr>
+</td>
+</tr>
 
-<tr style="border-top:none; display:none" class="yellow befinal-row">
+<tr class="befinal-row yellow" style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="1">FC DC Bal BE<br> 
+
+</td>
+
+
    <td style="border-top:none;">
      Sph : <input type="number" step="0.25" id="vd_ouS"><br>
   </td>
@@ -1157,9 +1157,9 @@ DC SPH: <span style="margin-right:30px" id="balanceBoth"></span>FC CYL: <span id
     Axis : <input type="number" step="5" min="0" max="180" id="vd_ouA"><br>
   </td>
 </tr>
-<tr class="be-row">
+<tr>
 <td style="font-weight:600;" class="yellow" colspan="4">
- Use this lens over Both Eyes  
+ Finalized Vector RX over Both Eyes  
     <span style="margin:0 15px" id="vd_out_ouS">-</span> / 
     <span style="margin:0 15px" id="vd_out_ouC">-</span> x 
     <span style="margin:0 15px" id="vd_out_ouA">-</span>
@@ -1431,21 +1431,22 @@ document.getElementById("fillBalance").addEventListener("click", () => {
 </div>
 
 <br>
-<button style="margin:5px 0; border-radius:10px; width:100px; height:25px" id="fillBalanceRE">FC DC RX</button>
+<button style="margin:5px 0; border-radius:10px; width:100px; height:25px" id="fillBalanceRE">FC DC Bal RE</button>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button style="margin:5px 0; border-radius:10px; width:100px; height:25px"  onclick="toggleREfinal()">Analysis</button>
+
 
 </td></tr>
-
-<tr class="refinal-row purp" style="display:none; border-top:none; border-bottom:none"><td rowspan="2" style="border-top:none; border-bottom:none" colspan="1">FC DC Bal RE<br>
-
-</td>
-<td style="border-top:none; border-bottom:none" colspan="3">
+<tr class="re-row purp" style="display:none">
+<td style="border-top:none; border-bottom:none" colspan="4">
 DC SPH: <span style="margin-right:30px" id="balanceRight"></span>FC CYL: <span id="balance-re"></span>
 
-</td></tr>
+</td>
+</tr>
 
-<tr style="border-top:none; display:none" class="refinal-row purp">
+<tr class="refinal-row purp" style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="1">FC DC Bal RE<br>
+
+</td>
+
    <td style="border-top:none;">
      Sph : <input type="number" step="0.25" id="vd_odS"><br>
   </td>
@@ -1457,7 +1458,7 @@ DC SPH: <span style="margin-right:30px" id="balanceRight"></span>FC CYL: <span i
   </td>
 </tr>
 <tr>
-<td style="font-weight:600; display:none" class="re-row purp" colspan="4"> Use this lens over Right Eye Only  
+<td style="font-weight:600;" class="purp" colspan="4">Finalized Vector RX over Right Eye Only 
     <span style="margin:0 15px" id="vd_out_odS">-</span> / 
     <span style="margin:0 15px" id="vd_out_odC">-</span> x 
     <span style="margin:0 15px" id="vd_out_odA">-</span>
@@ -1714,19 +1715,21 @@ document.getElementById("fillBalanceRE").addEventListener("click", () => {
 <br>
 <button style="margin:5px 0; border-radius:10px; width:100px; height:25px" id="fillBalanceLE">FC DC RX</button>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<button style="margin:5px 0; border-radius:10px; width:100px; height:25px"  onclick="toggleLEfinal()">Analysis</button>
+
 
 </td></tr>
 
-<tr class="lefinal-row turq" style="display:none; border-top:none; border-bottom:none"><td rowspan="2" style="border-top:none; border-bottom:none" colspan="1">FC DC Bal LE<br>
-</td>
-<td style="border-top:none; border-bottom:none" colspan="3">
+<tr class="le-row turq" style="display:none">
+<td style="border-top:none; border-bottom:none" colspan="4">
 DC SPH: <span style="margin-right:30px" id="balanceLeft"></span>FC CYL: <span id="balance-le"></span>
 
-</td></tr>
+</td>
+</tr>
 
-<tr style="border-top:none; display:none" class="lefinal-row turq">
-   <td style="border-top:none;">
+
+<tr class="turq" style="border-top:none; border-bottom:none"><td style="border-top:none; border-bottom:none" colspan="1">FC DC Bal LE<br>
+</td>
+<td style="border-top:none;">
      Sph : <input type="number" step="0.25" id="vd_osS"><br>
   </td>
   <td style="border-top:none;">
@@ -1737,7 +1740,7 @@ DC SPH: <span style="margin-right:30px" id="balanceLeft"></span>FC CYL: <span id
   </td>
 </tr>
 <tr>
-<td style="font-weight:600; display:none" class="le-row turq" colspan="4"> Use this lens over Left Eye Only  
+<td style="font-weight:600;" class="turq" colspan="4">Finalized Vector RX over Left Eye Only
     <span style="margin:0 15px" id="vd_out_osS">-</span> / 
     <span style="margin:0 15px" id="vd_out_osC">-</span> x 
     <span style="margin:0 15px" id="vd_out_osA">-</span>
